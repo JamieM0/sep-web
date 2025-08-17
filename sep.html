@@ -495,17 +495,14 @@
                 
                 <p><strong>Password Recovery & Backup:</strong> Lost passwords/keyfiles cannot be recovered. Always keep secure backups of important files before encryption.</p>
                 
-                <p><strong>Research Project Disclaimer:</strong> SEP for Web is developed as a university research project. While using industry-standard encryption, no guarantees are provided about the implementation. Do not use as the exclusive method to protect critical files.</p>
+                <p><strong>Browser Security Limitations:</strong> Browser-based encryption has inherent limitations regarding memory security and system access. <a href="https://github.com/JamieM0/sep-web/blob/main/README.md" target="_blank">Read the README</a> for detailed information about these limitations.</p>
+                
+                <p><strong>Research Project Disclaimer:</strong> SEP for Web is developed as a student research project and uses industry-standard encryption. Do not use as the exclusive method to protect critical files.</p>
             </div>
             
             <label style="display: flex; align-items: center; gap: var(--spacing-sm); margin-bottom: var(--spacing-lg); font-weight: 600;">
                 <input type="checkbox" id="modal-confirm-checkbox">
                 I understand and accept these terms
-            </label>
-            
-            <label style="display: flex; align-items: center; gap: var(--spacing-sm); margin-bottom: var(--spacing-lg);">
-                <input type="checkbox" id="modal-dont-show-again">
-                Don't show this warning again
             </label>
             
             <div style="display: flex; gap: var(--spacing-md); justify-content: flex-end;">
@@ -533,7 +530,7 @@
                     <button class="nav-tab" onclick="switchTab('keyfile')">Keyfile Tools</button>
                     <button class="nav-tab" onclick="switchTab('string')">String Crypto</button>
                     <button class="nav-tab" onclick="switchTab('lockers')">Lockers</button>
-                    <button class="nav-tab" onclick="switchTab('secure-delete')">Secure Delete</button>
+
                 </nav>
 
                 <!-- Encrypt Tab -->
@@ -915,82 +912,7 @@
                     </div>
                 </div>
 
-                <!-- Secure Delete Tab -->
-                <div id="secure-delete-tab" class="tab-content hidden">
-                    <div class="card">
-                        <h2>Secure File Deletion</h2>
-                        <div class="alert alert-error">
-                            <strong>⚠️ WARNING:</strong> Secure deletion is <strong>IRREVERSIBLE</strong>. Deleted files cannot be recovered by any means.
-                        </div>
-                        
-                        <div class="input-group">
-                            <label class="input-label">Select Files to Delete</label>
-                            <div class="file-drop-zone" id="delete-drop-zone">
-                                <p><strong>⚠️ Drop files to PERMANENTLY DELETE</strong> or click to select</p>
-                                <p class="text-muted">Selected files will be securely overwritten and deleted</p>
-                                <input type="file" id="delete-file-input" multiple style="display: none;">
-                            </div>
-                            
-                            <!-- Selected Files List -->
-                            <div id="delete-file-list-display" class="file-list hidden">
-                                <h4 style="margin-bottom: var(--spacing-sm);">⚠️ Files Marked for Deletion</h4>
-                                <div id="delete-files-display-container"></div>
-                            </div>
-                        </div>
 
-                        <!-- Deletion Settings -->
-                        <div class="input-group">
-                            <label class="input-label" for="delete-passes">Overwrite Passes</label>
-                            <input type="number" id="delete-passes" class="input-field" value="3" min="3" max="100">
-                            <p class="text-muted">Number of times to overwrite file data (3-100). Higher values are slower but more secure.</p>
-                            <div id="passes-warning" class="alert alert-warning hidden">
-                                <strong>Performance Warning:</strong> More than 15 passes may be very slow and cause excessive wear on SSDs.
-                            </div>
-                        </div>
-
-                        <!-- File List -->
-                        <div id="delete-file-list" class="hidden">
-                            <h4>Files Selected for Deletion</h4>
-                            <div id="delete-files-container" style="background: var(--accent-bg); padding: var(--spacing-md); border-radius: var(--border-radius); margin-bottom: var(--spacing-lg);">
-                                <!-- Files will be listed here -->
-                            </div>
-                        </div>
-
-                        <!-- Progress -->
-                        <div id="delete-progress" class="hidden">
-                            <div class="progress-bar">
-                                <div class="progress-fill"></div>
-                            </div>
-                            <p class="text-center text-muted" id="delete-status">Securely deleting files...</p>
-                        </div>
-
-                        <!-- Final Confirmation -->
-                        <div id="delete-confirmation" class="hidden">
-                            <div class="alert alert-error">
-                                <h4>⚠️ FINAL WARNING ⚠️</h4>
-                                <p><strong>You are about to PERMANENTLY DELETE the selected files.</strong></p>
-                                <p>This action cannot be undone. The files will be overwritten and removed from your device.</p>
-                                
-                                <label style="display: flex; align-items: center; gap: var(--spacing-sm); margin: var(--spacing-lg) 0; font-weight: 600;">
-                                    <input type="checkbox" id="confirm-deletion">
-                                    I understand this action is irreversible and accept full responsibility
-                                </label>
-                            </div>
-                        </div>
-
-                        <!-- Actions -->
-                        <div style="display: flex; gap: var(--spacing-md); justify-content: flex-end;">
-                            <button type="button" class="btn btn-secondary" onclick="clearDeleteForm()">Clear</button>
-                            <button type="button" class="btn btn-primary" onclick="prepareSecureDelete()" id="delete-prepare-btn">Prepare Deletion</button>
-                        </div>
-
-                        <!-- Confirmation Actions -->
-                        <div id="delete-confirmation-actions" class="hidden" style="display: flex; gap: var(--spacing-md); justify-content: flex-end; margin-top: var(--spacing-lg);">
-                            <button type="button" class="btn btn-secondary" onclick="cancelSecureDelete()">Cancel</button>
-                            <button type="button" class="btn" onclick="executeSecureDelete()" id="delete-execute-btn" disabled style="background: var(--error-color); color: white;">PERMANENTLY DELETE</button>
-                        </div>
-                    </div>
-                </div>
             </div>
         </main>
         
@@ -1005,7 +927,7 @@
                     </div>
                     <div style="color: var(--text-muted); font-size: 0.8rem;">
                         <strong>Shortcuts:</strong> 
-                        Ctrl+1-6 (Switch tabs) • 
+                        Ctrl+1-5 (Switch tabs) • 
                         Ctrl+Enter (Execute action)
                     </div>
                 </div>
@@ -1079,7 +1001,7 @@
                     );
                     return new Uint8Array(decrypted);
                 } catch (error) {
-                    throw new Error('Decryption failed - incorrect password or corrupted data');
+                    throw new Error('Decryption failed - please verify your password and file integrity');
                 }
             }
 
@@ -1101,7 +1023,7 @@
                     {
                         name: 'PBKDF2',
                         salt: salt,
-                        iterations: 1000, // Lower iterations for keyfiles since they're already random
+                        iterations: 10000, // Increased iterations for better security
                         hash: 'SHA-256'
                     },
                     keyMaterial,
@@ -1149,7 +1071,7 @@
                     );
                     return new Uint8Array(decrypted);
                 } catch (error) {
-                    throw new Error('Decryption failed - incorrect keyfile or corrupted data');
+                    throw new Error('Decryption failed - please verify your keyfile and file integrity');
                 }
             }
 
@@ -1177,47 +1099,71 @@
         // ===== PASSWORD STRENGTH MEASUREMENT =====
         class PasswordStrength {
             static analyze(password) {
-                if (!password) return { score: 0, text: 'No password entered', class: '' };
+                if (!password) return { score: 0, text: 'No password entered', class: '', entropy: 0 };
                 
                 let score = 0;
                 let feedback = [];
+                
+                // Calculate entropy estimate
+                const entropy = this.calculateEntropy(password);
 
-                // Length check
+                // Length-based scoring
                 if (password.length >= 8) score += 1;
                 else feedback.push('Use at least 8 characters');
                 
-                if (password.length >= 12) score += 1;
-                if (password.length >= 16) score += 1;
+                if (password.length >= 12) score += 1.5;
+                if (password.length >= 16) score += 1.5;
+                if (password.length >= 20) score += 1;
 
-                // Character variety
-                if (/[a-z]/.test(password)) score += 1;
+                // Character variety scoring
+                const hasLower = /[a-z]/.test(password);
+                const hasUpper = /[A-Z]/.test(password);
+                const hasNumber = /[0-9]/.test(password);
+                const hasSpecial = /[^A-Za-z0-9]/.test(password);
+                
+                if (hasLower) score += 1;
                 else feedback.push('Add lowercase letters');
                 
-                if (/[A-Z]/.test(password)) score += 1;
+                if (hasUpper) score += 1;
                 else feedback.push('Add uppercase letters');
                 
-                if (/[0-9]/.test(password)) score += 1;
+                if (hasNumber) score += 1;
                 else feedback.push('Add numbers');
                 
-                if (/[^A-Za-z0-9]/.test(password)) score += 1;
+                if (hasSpecial) score += 1.5;
                 else feedback.push('Add special characters');
 
-                // Bonus points
-                if (password.length >= 20) score += 1;
-                if (/[^A-Za-z0-9\s]/.test(password) && password.length >= 12) score += 1;
+                // Pattern analysis (reduce score for common patterns)
+                if (this.hasCommonPatterns(password)) {
+                    score -= 2;
+                    feedback.push('Avoid common patterns like "123" or "abc"');
+                }
+                
+                // Repetition check
+                if (this.hasExcessiveRepetition(password)) {
+                    score -= 1;
+                    feedback.push('Avoid repeating characters');
+                }
 
-                // Determine strength
+                // Bonus for high entropy
+                if (entropy > 50) score += 1;
+                if (entropy > 70) score += 1;
+
+                // Ensure minimum score of 0
+                score = Math.max(0, score);
+
+                // Determine strength based on entropy and score
                 let strength, className;
-                if (score <= 2) {
+                if (entropy < 25 || score <= 2) {
                     strength = 'Very Weak';
                     className = 'strength-weak';
-                } else if (score <= 4) {
+                } else if (entropy < 40 || score <= 4) {
                     strength = 'Weak';
                     className = 'strength-weak';
-                } else if (score <= 6) {
+                } else if (entropy < 55 || score <= 6) {
                     strength = 'Fair';
                     className = 'strength-fair';
-                } else if (score <= 8) {
+                } else if (entropy < 70 || score <= 8) {
                     strength = 'Good';
                     className = 'strength-good';
                 } else {
@@ -1226,11 +1172,40 @@
                 }
 
                 return {
-                    score: Math.min(score, 9),
+                    score: Math.min(score, 10),
                     text: strength,
                     class: className,
-                    feedback: feedback
+                    feedback: feedback,
+                    entropy: Math.round(entropy)
                 };
+            }
+            
+            static calculateEntropy(password) {
+                // Estimate password entropy based on character space and length
+                let charSpace = 0;
+                
+                if (/[a-z]/.test(password)) charSpace += 26;
+                if (/[A-Z]/.test(password)) charSpace += 26;
+                if (/[0-9]/.test(password)) charSpace += 10;
+                if (/[^A-Za-z0-9]/.test(password)) charSpace += 32; // Approximate special chars
+                
+                // Entropy = log2(charSpace^length)
+                return password.length * Math.log2(charSpace);
+            }
+            
+            static hasCommonPatterns(password) {
+                const commonPatterns = [
+                    /123/i, /abc/i, /qwe/i, /asd/i, /zxc/i,
+                    /password/i, /admin/i, /user/i, /login/i,
+                    /000/i, /111/i, /222/i, /333/i
+                ];
+                
+                return commonPatterns.some(pattern => pattern.test(password));
+            }
+            
+            static hasExcessiveRepetition(password) {
+                // Check for 3+ consecutive identical characters
+                return /(.)\1{2,}/.test(password);
             }
 
             static updateStrengthIndicator(password, containerId) {
@@ -1241,16 +1216,83 @@
 
                 const strengthBar = container.querySelector('.strength-bar');
                 const strengthFill = container.querySelector('.strength-fill');
-                const strengthText = container.querySelector('#strength-text');
+                const strengthTextElement = container.querySelector('#strength-text, #locker-strength-text');
 
                 // Update bar
                 strengthBar.className = 'strength-bar ' + analysis.class;
-                strengthFill.style.width = (analysis.score / 9 * 100) + '%';
+                strengthFill.style.width = (analysis.score / 10 * 100) + '%';
                 
-                // Update text
-                if (strengthText) {
-                    strengthText.textContent = analysis.text;
+                // Update text with entropy information
+                if (strengthTextElement) {
+                    let text = analysis.text;
+                    if (analysis.entropy > 0) {
+                        text += ` (${analysis.entropy} bits entropy)`;
+                    }
+                    strengthTextElement.textContent = text;
                 }
+                
+                // Show feedback for weak passwords
+                if (analysis.feedback.length > 0 && analysis.score <= 4) {
+                    console.log('Password feedback:', analysis.feedback.join(', '));
+                }
+            }
+        }
+
+        // ===== MEMORY SECURITY UTILITIES =====
+        class MemorySecurity {
+            static clearString(str) {
+                // Attempt to overwrite string memory (limited effectiveness in JS)
+                if (typeof str === 'string') {
+                    try {
+                        // Create a new string of the same length filled with random data
+                        const randomStr = Array(str.length).fill(0).map(() => 
+                            String.fromCharCode(Math.floor(Math.random() * 256))
+                        ).join('');
+                        // This doesn't actually clear the original string in memory due to JS string immutability
+                        // But it shows intent and may help with some debugging scenarios
+                        return randomStr;
+                    } catch (e) {
+                        console.warn('Failed to clear string memory:', e);
+                    }
+                }
+                return '';
+            }
+            
+            static clearArrayBuffer(buffer) {
+                // Overwrite ArrayBuffer with random data
+                if (buffer instanceof ArrayBuffer) {
+                    const view = new Uint8Array(buffer);
+                    crypto.getRandomValues(view);
+                } else if (buffer instanceof Uint8Array) {
+                    crypto.getRandomValues(buffer);
+                }
+            }
+            
+            static clearFormInputs(inputIds) {
+                // Clear form inputs and try to overwrite their values
+                inputIds.forEach(id => {
+                    const element = document.getElementById(id);
+                    if (element && element.value) {
+                        const originalLength = element.value.length;
+                        element.value = Array(originalLength).fill('x').join('');
+                        element.value = '';
+                    }
+                });
+            }
+            
+            static scheduleClearing(data, delayMs = 30000) {
+                // Schedule automatic clearing of sensitive data after delay
+                setTimeout(() => {
+                    if (Array.isArray(data)) {
+                        data.forEach(item => {
+                            if (item instanceof ArrayBuffer || item instanceof Uint8Array) {
+                                this.clearArrayBuffer(item);
+                            }
+                        });
+                    } else if (data instanceof ArrayBuffer || data instanceof Uint8Array) {
+                        this.clearArrayBuffer(data);
+                    }
+                }, delayMs);
             }
         }
 
@@ -1374,12 +1416,18 @@
             }, duration);
         }
 
-        // Update old showAlert function to use new system
-        function showNotification(message, type = 'info', duration = 5000) {
-            showNotification(message, type, duration);
-        }
+        // This function was removed to fix infinite recursion bug
 
         // ===== FILE LISTING FUNCTIONS =====
+        function escapeHtml(unsafe) {
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+        
         function displayFileList(files, containerId, listId) {
             const container = document.getElementById(containerId);
             const list = document.getElementById(listId);
@@ -1389,15 +1437,36 @@
                 return;
             }
             
-            container.innerHTML = files.map(file => `
-                <div class="file-item">
-                    <div class="file-info">
-                        <div class="file-name">${file.name}</div>
-                        <div class="file-details">${formatFileSize(file.size)} • ${file.type || 'Unknown type'}</div>
-                    </div>
-                    <button onclick="removeFileFromList('${listId}', '${file.name}')" class="btn btn-sm" style="color: var(--error-color);">Remove</button>
-                </div>
-            `).join('');
+            // Clear container and build safely using DOM methods
+            container.innerHTML = '';
+            
+            files.forEach((file, index) => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                
+                const fileInfo = document.createElement('div');
+                fileInfo.className = 'file-info';
+                
+                const fileName = document.createElement('div');
+                fileName.className = 'file-name';
+                fileName.textContent = file.name; // Safe assignment
+                
+                const fileDetails = document.createElement('div');
+                fileDetails.className = 'file-details';
+                fileDetails.textContent = `${formatFileSize(file.size)} • ${file.type || 'Unknown type'}`;
+                
+                const removeBtn = document.createElement('button');
+                removeBtn.className = 'btn btn-sm';
+                removeBtn.style.color = 'var(--error-color)';
+                removeBtn.textContent = 'Remove';
+                removeBtn.onclick = () => removeFileFromList(listId, index);
+                
+                fileInfo.appendChild(fileName);
+                fileInfo.appendChild(fileDetails);
+                fileItem.appendChild(fileInfo);
+                fileItem.appendChild(removeBtn);
+                container.appendChild(fileItem);
+            });
             
             list.classList.remove('hidden');
         }
@@ -1410,10 +1479,33 @@
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         }
 
-        function removeFileFromList(listId, fileName) {
-            // This would need specific implementation based on which list
-            console.log('Remove file:', fileName, 'from list:', listId);
-            showNotification(`Removed ${fileName}`, 'info');
+        function removeFileFromList(listId, fileIndex) {
+            // Determine which global array to modify based on listId
+            if (listId === 'encrypt-file-list') {
+                selectedFiles.splice(fileIndex, 1);
+                displayFileList(selectedFiles, 'encrypt-files-container', 'encrypt-file-list');
+                if (selectedFiles.length === 0) {
+                    document.getElementById('encrypt-drop-zone').classList.remove('has-files');
+                }
+            } else if (listId === 'decrypt-file-list') {
+                selectedFiles.splice(fileIndex, 1);
+                displayFileList(selectedFiles, 'decrypt-files-container', 'decrypt-file-list');
+                if (selectedFiles.length === 0) {
+                    document.getElementById('decrypt-drop-zone').classList.remove('has-files');
+                }
+            } else if (listId === 'locker-create-file-list') {
+                lockerFiles.splice(fileIndex, 1);
+                displayFileList(lockerFiles, 'locker-create-files-container', 'locker-create-file-list');
+                if (lockerFiles.length === 0) {
+                    document.getElementById('locker-create-drop-zone').classList.remove('has-files');
+                }
+            } else if (listId === 'locker-unlock-file-list') {
+                selectedLockerFile = null;
+                displayFileList([], 'locker-unlock-files-container', 'locker-unlock-file-list');
+                document.getElementById('locker-unlock-drop-zone').classList.remove('has-files');
+            }
+            
+            showNotification('File removed from list', 'info');
         }
 
         function switchTab(tabName) {
@@ -1453,12 +1545,6 @@
 
         // ===== MODAL SECURITY WARNINGS =====
         function showSecurityModal() {
-            // Check if user has disabled warnings
-            if (localStorage.getItem('sep-disable-warnings') === 'true') {
-                encryptFiles();
-                return;
-            }
-
             const modal = document.getElementById('security-modal');
             const checkbox = document.getElementById('modal-confirm-checkbox');
             const proceedBtn = document.getElementById('modal-proceed-btn');
@@ -1481,12 +1567,6 @@
         }
 
         function proceedWithModalEncryption() {
-            // Save preference if "don't show again" is checked
-            const dontShowAgain = document.getElementById('modal-dont-show-again').checked;
-            if (dontShowAgain) {
-                localStorage.setItem('sep-disable-warnings', 'true');
-            }
-            
             closeSecurityModal();
             encryptFiles();
         }
@@ -1545,26 +1625,7 @@
                 });
             }
 
-            // Setup secure delete functionality
-            FileHandler.setupDropZone('delete-drop-zone', 'delete-file-input', (files) => {
-                filesToDelete = files;
-                displayFileList(files, 'delete-files-display-container', 'delete-file-list-display');
-                showNotification(`Selected ${files.length} file(s) for secure deletion`, 'warning');
-            });
-
-            // Setup passes warning
-            const passesInput = document.getElementById('delete-passes');
-            if (passesInput) {
-                passesInput.addEventListener('input', (e) => {
-                    const passes = parseInt(e.target.value);
-                    const warning = document.getElementById('passes-warning');
-                    if (passes > 15) {
-                        warning.classList.remove('hidden');
-                    } else {
-                        warning.classList.add('hidden');
-                    }
-                });
-            }
+            // Secure delete functionality removed - was misleading
 
             // Setup keyboard shortcuts
             document.addEventListener('keydown', (e) => {
@@ -1590,16 +1651,13 @@
                         case 'lockers':
                             createLocker();
                             break;
-                        case 'secure-delete':
-                            prepareSecureDelete();
-                            break;
                     }
                 }
                 
                 // Tab navigation
                 if (e.ctrlKey && e.key >= '1' && e.key <= '6') {
                     e.preventDefault();
-                    const tabs = ['encrypt', 'decrypt', 'keyfile', 'string', 'lockers', 'secure-delete'];
+                    const tabs = ['encrypt', 'decrypt', 'keyfile', 'string', 'lockers'];
                     const tabIndex = parseInt(e.key) - 1;
                     if (tabs[tabIndex]) {
                         switchTab(tabs[tabIndex]);
@@ -1673,11 +1731,14 @@
             FileHandler.showProgress('encrypt-progress');
             
             try {
+                const sensitiveData = []; // Track data for cleanup
+                
                 for (let i = 0; i < selectedFiles.length; i++) {
                     const file = selectedFiles[i];
                     FileHandler.updateProgress('encrypt-progress', (i / selectedFiles.length) * 50);
                     
                     const fileData = await FileHandler.readFileAsArrayBuffer(file);
+                    sensitiveData.push(fileData);
                     
                     let encryptedData;
                     if (method === 'password') {
@@ -1691,6 +1752,9 @@
                     const filename = file.name + '.sep';
                     FileHandler.downloadFile(encryptedData, filename);
                     
+                    // Clear file data from memory after processing
+                    MemorySecurity.clearArrayBuffer(fileData);
+                    
                     FileHandler.updateProgress('encrypt-progress', ((i + 1) / selectedFiles.length) * 100);
                 }
                 
@@ -1699,6 +1763,13 @@
             } catch (error) {
                 showNotification('Encryption failed: ' + error.message, 'error');
             } finally {
+                // Clear sensitive data from memory
+                if (method === 'password') {
+                    MemorySecurity.clearFormInputs(['encrypt-password', 'encrypt-password-confirm']);
+                } else if (keyfileData) {
+                    MemorySecurity.clearArrayBuffer(keyfileData);
+                }
+                
                 FileHandler.showProgress('encrypt-progress', false);
             }
         }
@@ -1753,6 +1824,10 @@
                     
                     FileHandler.downloadFile(decryptedData, filename);
                     
+                    // Clear decrypted data from memory after download
+                    MemorySecurity.clearArrayBuffer(decryptedData);
+                    MemorySecurity.clearArrayBuffer(encryptedData);
+                    
                     FileHandler.updateProgress('decrypt-progress', ((i + 1) / selectedFiles.length) * 100);
                 }
                 
@@ -1761,6 +1836,13 @@
             } catch (error) {
                 showNotification('Decryption failed: ' + error.message, 'error');
             } finally {
+                // Clear sensitive data from memory
+                if (method === 'password') {
+                    MemorySecurity.clearFormInputs(['decrypt-password']);
+                } else if (keyfileData) {
+                    MemorySecurity.clearArrayBuffer(keyfileData);
+                }
+                
                 FileHandler.showProgress('decrypt-progress', false);
             }
         }
@@ -1867,9 +1949,17 @@
                 output.value = result;
                 document.getElementById('copy-result-btn').disabled = false;
                 showNotification(`String ${currentStringMode}ed successfully`, 'success');
+                
+                // Clear password from memory after a delay
+                setTimeout(() => {
+                    MemorySecurity.clearFormInputs(['string-password']);
+                }, 5000);
+                
             } catch (error) {
                 showNotification(`String ${currentStringMode}ion failed: ` + error.message, 'error');
                 output.value = '';
+                // Still clear password on error
+                MemorySecurity.clearFormInputs(['string-password']);
             }
         }
 
@@ -2124,178 +2214,10 @@
             document.getElementById('unlock-keyfile-input').value = '';
         }
 
-        // ===== SECURE DELETION =====
-        let filesToDelete = [];
+        // ===== SECURE DELETION REMOVED =====
+        // This feature was removed as it was misleading - browsers cannot perform true secure deletion
 
-        class SecureDeletion {
-            static async secureDelete(files, passes = 3, progressCallback) {
-                console.log(`Starting secure deletion of ${files.length} files with ${passes} passes`);
-                
-                // Note: True secure deletion requires filesystem-level access
-                // This implementation provides a simulation for educational purposes
-                // In a real application, this would need to interface with the OS
-                
-                for (let i = 0; i < files.length; i++) {
-                    const file = files[i];
-                    console.log(`Processing file ${i + 1}/${files.length}: ${file.name} (${file.size} bytes)`);
-                    
-                    for (let pass = 1; pass <= passes; pass++) {
-                        console.log(`Pass ${pass}/${passes} on ${file.name}`);
-                        
-                        // Simulate overwrite passes
-                        const progress = ((i * passes + pass) / (files.length * passes)) * 100;
-                        if (progressCallback) {
-                            progressCallback(progress, `Pass ${pass}/${passes} on ${file.name}`);
-                        }
-                        
-                        // Simulate the time it takes to overwrite (longer for larger files)
-                        const delay = Math.max(100, Math.min(2000, file.size / 10000)) + Math.random() * 200;
-                        await new Promise(resolve => setTimeout(resolve, delay));
-                    }
-                    
-                    console.log(`Completed secure deletion of ${file.name}`);
-                }
-                
-                console.log('Secure deletion completed successfully');
-                if (progressCallback) {
-                    progressCallback(100, 'Deletion complete');
-                }
-                
-                return true;
-            }
-        }
-
-        function prepareSecureDelete() {
-            console.log('Preparing secure delete for files:', filesToDelete);
-            
-            if (filesToDelete.length === 0) {
-                showNotification('Please select files to delete', 'warning');
-                return;
-            }
-
-            const passes = parseInt(document.getElementById('delete-passes').value);
-            if (passes < 3 || passes > 100) {
-                showNotification('Passes must be between 3 and 100', 'error');
-                return;
-            }
-
-            console.log(`Preparing to delete ${filesToDelete.length} files with ${passes} passes`);
-
-            // Show file list
-            const fileList = document.getElementById('delete-file-list');
-            const container = document.getElementById('delete-files-container');
-            
-            if (container) {
-                container.innerHTML = filesToDelete.map(file => 
-                    `<div style="padding: var(--spacing-xs); border-bottom: 1px solid var(--border-color);">
-                        <strong>${file.name}</strong> (${formatFileSize(file.size)})
-                    </div>`
-                ).join('');
-            }
-            
-            if (fileList) {
-                fileList.classList.remove('hidden');
-            }
-
-            // Show confirmation
-            const confirmation = document.getElementById('delete-confirmation');
-            const actions = document.getElementById('delete-confirmation-actions');
-            
-            if (confirmation) confirmation.classList.remove('hidden');
-            if (actions) actions.classList.remove('hidden');
-
-            // Setup confirmation checkbox
-            const confirmCheckbox = document.getElementById('confirm-deletion');
-            const executeBtn = document.getElementById('delete-execute-btn');
-            
-            if (confirmCheckbox && executeBtn) {
-                // Remove previous listeners
-                const newCheckbox = confirmCheckbox.cloneNode(true);
-                confirmCheckbox.parentNode.replaceChild(newCheckbox, confirmCheckbox);
-                
-                newCheckbox.addEventListener('change', () => {
-                    executeBtn.disabled = !newCheckbox.checked;
-                    console.log('Confirmation checkbox changed:', newCheckbox.checked);
-                });
-            }
-
-            const prepareBtn = document.getElementById('delete-prepare-btn');
-            if (prepareBtn) prepareBtn.style.display = 'none';
-        }
-
-        function cancelSecureDelete() {
-            console.log('Cancelling secure delete');
-            
-            const confirmation = document.getElementById('delete-confirmation');
-            const actions = document.getElementById('delete-confirmation-actions');
-            const fileList = document.getElementById('delete-file-list');
-            const prepareBtn = document.getElementById('delete-prepare-btn');
-            const checkbox = document.getElementById('confirm-deletion');
-            
-            if (confirmation) confirmation.classList.add('hidden');
-            if (actions) actions.classList.add('hidden');
-            if (fileList) fileList.classList.add('hidden');
-            if (prepareBtn) prepareBtn.style.display = 'inline-flex';
-            if (checkbox) checkbox.checked = false;
-        }
-
-        async function executeSecureDelete() {
-            console.log('Executing secure delete');
-            
-            const passes = parseInt(document.getElementById('delete-passes').value);
-            const progressDiv = document.getElementById('delete-progress');
-            const statusText = document.getElementById('delete-status');
-            
-            console.log(`Starting deletion with ${passes} passes`);
-            
-            // Hide confirmation and show progress
-            const confirmation = document.getElementById('delete-confirmation');
-            const actions = document.getElementById('delete-confirmation-actions');
-            
-            if (confirmation) confirmation.classList.add('hidden');
-            if (actions) actions.classList.add('hidden');
-            if (progressDiv) progressDiv.classList.remove('hidden');
-
-            try {
-                const result = await SecureDeletion.secureDelete(filesToDelete, passes, (progress, status) => {
-                    console.log(`Progress: ${progress}% - ${status}`);
-                    FileHandler.updateProgress('delete-progress', progress);
-                    if (statusText) statusText.textContent = status;
-                });
-
-                console.log('Secure deletion completed successfully');
-                showNotification(`Successfully deleted ${filesToDelete.length} file(s) with ${passes} passes`, 'success');
-                clearDeleteForm();
-            } catch (error) {
-                console.error('Secure deletion failed:', error);
-                showNotification('Secure deletion failed: ' + error.message, 'error');
-            } finally {
-                if (progressDiv) progressDiv.classList.add('hidden');
-            }
-        }
-
-        function clearDeleteForm() {
-            console.log('Clearing delete form');
-            filesToDelete = [];
-            
-            const passesInput = document.getElementById('delete-passes');
-            const fileList = document.getElementById('delete-file-list');
-            const fileListDisplay = document.getElementById('delete-file-list-display');
-            const confirmation = document.getElementById('delete-confirmation');
-            const actions = document.getElementById('delete-confirmation-actions');
-            const prepareBtn = document.getElementById('delete-prepare-btn');
-            const checkbox = document.getElementById('confirm-deletion');
-            const warning = document.getElementById('passes-warning');
-            
-            if (passesInput) passesInput.value = '3';
-            if (fileList) fileList.classList.add('hidden');
-            if (fileListDisplay) fileListDisplay.classList.add('hidden');
-            if (confirmation) confirmation.classList.add('hidden');
-            if (actions) actions.classList.add('hidden');
-            if (prepareBtn) prepareBtn.style.display = 'inline-flex';
-            if (checkbox) checkbox.checked = false;
-            if (warning) warning.classList.add('hidden');
-        }
+        // All secure deletion functions removed - feature was misleading
 
         // ===== FORM MANAGEMENT =====
         function clearEncryptForm() {

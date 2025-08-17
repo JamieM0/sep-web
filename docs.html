@@ -58,7 +58,7 @@
             <nav class="nav-links" aria-label="Main navigation">
                 <a class="btn" href="docs.html">Docs</a>
                 <a class="btn" href="sep.html">Open App</a>
-                <a class="btn btn-primary" href="#" onclick="downloadSep(); return false;" aria-label="Download sep.html">Download Single‑File</a>
+                <a class="btn btn-primary" href="https://raw.githubusercontent.com/JamieM0/sep-web/main/sep.html" download="sep.html">Download Single‑File</a>
             </nav>
         </div>
     </header>
@@ -75,7 +75,7 @@
                     <li>Encrypt/Decrypt files with a password or a keyfile</li>
                     <li>Create and unlock encrypted lockers</li>
                     <li>Text encryption utility</li>
-                    <li>Simulated multi‑pass secure delete (3–100 passes)</li>
+                    <li>Cross‑platform compatibility (works on any modern browser)</li>
                     <li>Offline‑first: single HTML file, no network required</li>
                 </ul>
             </div>
@@ -84,7 +84,7 @@
                 <ul>
                     <li>AES‑GCM with 256‑bit keys</li>
                     <li>PBKDF2‑SHA‑256 key derivation (passwords: 100,000 iterations)</li>
-                    <li>Keyfiles derive keys with reduced iterations (already high entropy)</li>
+                    <li>Keyfiles derive keys with 10,000 iterations (reduced from passwords due to high entropy)</li>
                     <li>Per‑file random salt and IV</li>
                 </ul>
             </div>
@@ -95,14 +95,14 @@
                 <h3>Using the app</h3>
                 <ol>
                     <li>Open <a href="sep.html">sep.html</a> in your browser.</li>
-                    <li>Choose a tab, Encrypt, Decrypt, Keyfile Tools, String Crypto, Lockers, or Secure Delete.</li>
+                    <li>Choose a tab: Encrypt, Decrypt, Keyfile Tools, String Crypto, or Lockers.</li>
                     <li>Follow the inputs on screen. Progress and notifications appear in the UI.</li>
                 </ol>
             </div>
             <div class="card">
                 <h3>Shortcuts</h3>
                 <ul>
-                    <li><span class="mono">Ctrl + 1…6</span>: Switch tabs</li>
+                    <li><span class="mono">Ctrl + 1…5</span>: Switch tabs</li>
                     <li><span class="mono">Ctrl + Enter</span>: Run primary action in current tab</li>
                 </ul>
             </div>
@@ -128,7 +128,7 @@
             <ul>
                 <li>All processing is local. There is no account or recovery mechanism. Losing a password or keyfile means permanent loss of access.</li>
                 <li>There is no rate limiting, a copied encrypted file can be attacked offline. Choose strong passwords or keyfiles.</li>
-                <li>Secure delete is a simulation in browsers, true secure wiping requires filesystem‑level control.</li>
+                <li>Browser‑based encryption has inherent limitations - see the README for details on the security model.</li>
                 <li>University research project disclaimer, no guarantees are provided about the implementation. Keep independent backups.</li>
             </ul>
         </section>
