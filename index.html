@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SEP for Web, Simple. Private. Portable.</title>
+    <meta name="description" content="SEP for Web is a single-file, 100% client-side encryption tool. Encrypt and decrypt files, generate keyfiles, create lockers, and securely delete — all in your browser." />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+    <style>
+        :root {
+            --primary-bg: #ffffff;
+            --secondary-bg: #f8f9fa;
+            --accent-bg: #f0f2f5;
+            --border-color: #e1e5e9;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6b7280;
+            --text-muted: #9ca3af;
+            --accent-color: #2ca4b6;
+            --accent-hover: #238a97;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+
+            /* Color accents for a more vibrant feel */
+            --accent-1: #2ca4b6; /* teal */
+            --accent-2: #22d3ee; /* cyan */
+            --accent-3: #8b5cf6; /* purple */
+            --accent-4: #f59e0b; /* amber */
+            --accent-5: #10b981; /* green */
+
+            --font-heading: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+            --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+
+            --radius: 12px;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow-md: 0 6px 20px rgba(0,0,0,0.08);
+            --shadow-lg: 0 12px 30px rgba(0,0,0,0.12);
+        }
+
+        * { box-sizing: border-box; }
+        html, body { height: 100%; }
+        body {
+            margin: 0;
+            font-family: var(--font-body);
+            color: var(--text-primary);
+            background: var(--primary-bg);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: saturate(180%) blur(12px);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 0;
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .wordmark { height: 28px; display: block; }
+        .nav-links {
+            display: flex;
+            gap: 10px;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            height: 40px;
+            padding: 0 14px;
+            font-weight: 600;
+            font-family: var(--font-heading);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--secondary-bg);
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: all 0.15s ease;
+        }
+        .btn:hover { background: var(--accent-bg); }
+        .btn-primary {
+            background: var(--accent-color);
+            color: #fff;
+            border-color: transparent;
+        }
+        .btn-primary:hover { background: var(--accent-hover); box-shadow: var(--shadow-md); transform: translateY(-1px); }
+
+        /* Hero */
+        .hero {
+            padding: 64px 0 28px;
+            position: relative;
+            overflow: hidden;
+            background:
+                radial-gradient(800px 300px at 20% -10%, rgba(44,164,182,0.14), transparent 60%),
+                radial-gradient(800px 300px at 80% -20%, rgba(34,211,238,0.12), transparent 60%);
+        }
+        .hero h2 {
+            margin: 0 0 10px 0;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 2.4rem;
+            letter-spacing: -0.5px;
+            text-align: center;
+        }
+        .tagline {
+            margin-top: 8px;
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: 600;
+            font-family: var(--font-heading);
+            color: var(--text-secondary);
+            user-select: none;
+        }
+        .tagline .wheel {
+            display: inline-flex;
+            gap: 8px;
+            padding: 6px 8px;
+            border-radius: 999px;
+            background: transparent;
+            transition: transform 0.15s ease;
+        }
+        .tag-word { display: inline-block; transition: opacity 0.5s ease, transform 0.5s ease; color: var(--accent-color); }
+        .fade-out { opacity: 0; transform: translateY(8px); }
+        .fade-in { opacity: 1; transform: translateY(0); }
+
+        .hero-cta {
+            margin-top: 26px;
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .hero-sub {
+            margin-top: 12px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Sections */
+        section { padding: 48px 0; }
+        .card {
+            background: var(--primary-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            padding: 24px;
+        }
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 1.6rem;
+            margin: 0 0 18px 0;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+        .feature {
+            position: relative;
+            padding: 18px;
+            border-radius: 14px;
+            background: linear-gradient(180deg, rgba(63,63,70,0.02), rgba(63,63,70,0.01));
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+        }
+        .feature::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+            z-index: 1;
+        }
+        .feature::after {
+            content: "";
+            position: absolute;
+            inset: -1px;
+            background: linear-gradient(120deg, rgba(44,164,182,0.22), rgba(34,211,238,0.18), rgba(16,185,129,0.18));
+            opacity: 0;
+            transition: opacity 0.18s ease;
+            z-index: 0;
+        }
+        .feature:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: transparent; }
+        .feature:hover::after { opacity: 1; }
+        .feature > * { position: relative; z-index: 1; }
+        .feature h3 { margin: 0 0 8px 0; font-family: var(--font-heading); font-size: 1.06rem; }
+        .feature p { margin: 0; color: var(--text-secondary); font-size: 0.96rem; }
+        .grid .feature:nth-child(2)::before { background: linear-gradient(90deg, var(--accent-2), var(--accent-3)); }
+        .grid .feature:nth-child(3)::before { background: linear-gradient(90deg, var(--accent-3), var(--accent-4)); }
+        .grid .feature:nth-child(4)::before { background: linear-gradient(90deg, var(--accent-4), var(--accent-5)); }
+        .grid .feature:nth-child(5)::before { background: linear-gradient(90deg, var(--accent-5), var(--accent-1)); }
+
+        .note {
+            background: rgb(245 158 11 / 0.08);
+            border: 1px solid rgb(245 158 11 / 0.3);
+            color: var(--warning-color);
+            padding: 14px 16px;
+            border-radius: 10px;
+        }
+        .list {
+            display: grid;
+            gap: 10px;
+            padding-left: 18px;
+        }
+        .list li { color: var(--text-secondary); }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border-color);
+            background: var(--secondary-bg);
+            padding: 28px 0;
+            color: var(--text-muted);
+            font-size: 0.92rem;
+        }
+
+        @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } .hero h2 { font-size: 2rem; } .tagline { font-size: 1.1rem; } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container nav">
+            <div class="brand">
+                <img src="assets/images/wordmark-inline.png" alt="SEP for Web" class="wordmark" style="height:48px;display:block;" />
+            </div>
+            <nav class="nav-links" aria-label="Main navigation">
+                <a class="btn" href="docs.html">Docs</a>
+                <a class="btn" href="sep.html">Open App</a>
+                <a class="btn btn-primary" href="#" onclick="downloadSep(); return false;" aria-label="Download sep.html">Download Single‑File</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero" id="hero">
+            <div class="container">
+                <h2>Encrypt anything, right in your browser.</h2>
+                <div class="tagline" aria-label="Tagline word wheel">
+                    <span class="wheel" id="tagline-wheel" title="Hover to shuffle">
+                        <span class="tag-word" id="word-1">Simple.</span>
+                        <span class="tag-word" id="word-2">Private.</span>
+                        <span class="tag-word" id="word-3">Portable.</span>
+                    </span>
+                </div>
+                <div class="hero-cta">
+                    <a class="btn btn-primary" href="sep.html">Open Web App</a>
+                    <a class="btn" href="#" onclick="downloadSep(); return false;" aria-label="Download sep.html">Download sep.html</a>
+                    <a class="btn" href="#features">See Features</a>
+                </div>
+                <p class="hero-sub">No sign‑in, no servers, your files never leave your device. Works on laptops, phones and tablets.</p>
+            </div>
+        </section>
+
+        <section id="features">
+            <div class="container">
+                <h3 class="section-title">Everything you need, in one file</h3>
+                <div class="grid">
+                    <div class="feature">
+                        <h3>Protect your files</h3>
+                        <p>Lock any file with a password or a keyfile, fast and local.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Keyfiles</h3>
+                        <p>Create a small file that acts like a super strong key, easy to store separately.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Lockers</h3>
+                        <p>Bundle many files into one encrypted container, keep folder details private.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Secure delete</h3>
+                        <p>Overwrite and remove files with multiple passes, with clear warnings before you proceed.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Text vault</h3>
+                        <p>Encrypt short notes or secrets, copy results in one click.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Offline by design</h3>
+                        <p>It is one HTML file, open it in your browser and you are ready to go, even without internet.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="how">
+            <div class="container">
+                <div class="card">
+                    <h3 class="section-title">How it works</h3>
+                    <p>SEP for Web runs entirely in your browser. Files are read locally, processed with modern encryption, then saved back to your device, no uploads, no servers, no telemetry. You can download the app as a single <code>sep.html</code> file and use it offline.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="notes">
+            <div class="container">
+                <h3 class="section-title">Important notes</h3>
+                <div class="note" role="alert">
+                    <strong>Security basics:</strong>
+                    <ul class="list">
+                        <li>All encryption happens locally, you are responsible for managing passwords and keyfiles.</li>
+                        <li>There is no password recovery, back up important data before encrypting.</li>
+                        <li>There is no server rate limiting, a copied encrypted file can be tested many times offline.</li>
+                        <li>SEP for Web is a university research project, no guarantees are provided about the implementation.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="status">
+            <div class="container">
+                <div class="card">
+                    <h3 class="section-title">Project status</h3>
+                    <p><strong>MVP complete:</strong> Core features include file encryption and decryption, keyfiles, lockers, secure delete, text crypto and offline support.</p>
+                    <p><a class="btn" href="docs.html">Read the docs</a> <a class="btn btn-primary" href="sep.html">Launch the app</a></p>
+                </div>
+            </div>
+        </section>
+
+        <section id="future">
+            <div class="container">
+                <h3 class="section-title">Future ambitions</h3>
+                <ul class="list">
+                    <li><strong>Password Library:</strong> Built‑in password management and autofill for encrypted files/objects.</li>
+                    <li><strong>Password Manager Integrations:</strong> Explore Bitwarden and others for adding items via their APIs.</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container" style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
+            <div>SEP for Web • 100% Client‑Side • No Data Transmitted</div>
+            <div>Shortcuts in app: Ctrl+1‑6 (tabs) • Ctrl+Enter (run)</div>
+        </div>
+    </footer>
+
+    <script>
+        // Robust download that saves sep.html instead of navigating
+        async function downloadSep() {
+            try {
+                const response = await fetch('sep.html', { cache: 'no-store' });
+                if (!response.ok) throw new Error('Network error');
+                const data = await response.arrayBuffer();
+                const blob = new Blob([data], { type: 'application/octet-stream' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'sep.html';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                // Delay revocation to ensure some browsers fully honor the download
+                setTimeout(() => URL.revokeObjectURL(url), 1000);
+            } catch (e) {
+                // Fallback
+                const a = document.createElement('a');
+                a.href = 'sep.html';
+                a.setAttribute('download', 'sep.html');
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }
+        }
+
+        // Tagline wheel logic
+        (function() {
+            const WORD_LIST = [
+                'Simple', 'Private', 'Portable', 'Secure', 'Local', 'Fast', 'Offline', 'Trusted', 'Modern', 'Minimal'
+            ];
+            const slots = [
+                document.getElementById('word-1'),
+                document.getElementById('word-2'),
+                document.getElementById('word-3')
+            ];
+            const container = document.getElementById('hero');
+            let hovering = false;
+
+            function currentWords() {
+                return slots.map(s => (s.textContent || '').replace(/\.$/, ''));
+            }
+            function pickNewWord(exclude) {
+                const choices = WORD_LIST.filter(w => !exclude.includes(w));
+                return choices[Math.floor(Math.random() * choices.length)] || exclude[0];
+            }
+            function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+            async function cycleSlot(i) {
+                const slot = slots[i];
+                const currentWordsBeforeChange = currentWords();
+                slot.classList.add('fade-out');
+                await sleep(250);
+                const next = pickNewWord(currentWordsBeforeChange);
+                slot.textContent = next + '.';
+                slot.classList.remove('fade-out');
+                slot.classList.add('fade-in');
+                await sleep(250);
+                slot.classList.remove('fade-in');
+            }
+
+            async function loop() {
+                while (hovering) {
+                    for (let i = 0; i < slots.length && hovering; i++) {
+                        await cycleSlot(i);
+                        // 1s delay before next word begins animating
+                        if (hovering) { await sleep(1000); }
+                    }
+                }
+            }
+
+            container.addEventListener('mouseenter', () => {
+                if (hovering) return;
+                hovering = true;
+                loop();
+            });
+            container.addEventListener('mouseleave', () => { hovering = false; });
+            container.addEventListener('focusin', () => { if (!hovering) { hovering = true; loop(); } });
+            container.addEventListener('focusout', () => { hovering = false; });
+        })();
+    </script>
+</body>
+</html>
+
+

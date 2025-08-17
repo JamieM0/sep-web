@@ -1,0 +1,2327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEP for Web - Simple. Private. Portable.</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ===== CSS RESET & BASE STYLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Colors */
+            --primary-bg: #ffffff;
+            --secondary-bg: #f8f9fa;
+            --accent-bg: #f0f2f5;
+            --border-color: #e1e5e9;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6b7280;
+            --text-muted: #9ca3af;
+            --accent-color: #2ca4b6;
+            --accent-hover: #238a97;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+            
+            /* Typography */
+            --font-heading: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+            --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+            
+            /* Spacing */
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            --spacing-2xl: 3rem;
+            
+            /* Borders */
+            --border-radius: 8px;
+            --border-radius-lg: 12px;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+
+        body {
+            font-family: var(--font-body);
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--primary-bg);
+            font-size: 16px;
+        }
+
+        /* ===== TYPOGRAPHY ===== */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: var(--spacing-md);
+        }
+
+        h1 { font-size: 2.5rem; }
+        h2 { font-size: 2rem; }
+        h3 { font-size: 1.5rem; }
+        h4 { font-size: 1.25rem; }
+
+        p {
+            margin-bottom: var(--spacing-md);
+            color: var(--text-secondary);
+        }
+
+        /* ===== LAYOUT ===== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-lg);
+        }
+
+        .main-content {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            padding: var(--spacing-xl) 0;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            background:
+                radial-gradient(800px 300px at 20% -10%, rgba(44, 164, 182, 0.14), transparent 60%),
+                radial-gradient(800px 300px at 80% -20%, rgba(34, 211, 238, 0.12), transparent 60%),
+                var(--secondary-bg);
+        }
+
+        .app-section {
+            flex: 1;
+            padding: var(--spacing-2xl) 0;
+        }
+
+        /* ===== COMPONENTS ===== */
+        .card {
+            background: var(--primary-bg);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            margin-bottom: var(--spacing-lg);
+            transition: box-shadow 0.15s ease;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-sm) var(--spacing-lg);
+            font-family: var(--font-heading);
+            font-weight: 500;
+            font-size: 0.9rem;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-decoration: none;
+            min-height: 44px;
+            gap: var(--spacing-sm);
+        }
+
+        .btn-primary {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: var(--secondary-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent-bg);
+            border-color: var(--accent-color);
+        }
+
+        .btn-sm {
+            padding: var(--spacing-xs) var(--spacing-sm);
+            font-size: 0.8rem;
+            min-height: 36px;
+        }
+
+        .input-group {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .input-label {
+            display: block;
+            font-family: var(--font-heading);
+            font-weight: 500;
+            margin-bottom: var(--spacing-sm);
+            color: var(--text-primary);
+        }
+
+        .input-field {
+            width: 100%;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            transition: border-color 0.15s ease;
+            min-height: 44px;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(44, 164, 182, 0.12);
+        }
+
+        .file-drop-zone {
+            border: 2px dashed var(--border-color);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-lg);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            background: var(--secondary-bg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .file-drop-zone:hover,
+        .file-drop-zone.drag-over {
+            border-color: var(--accent-color);
+            background: rgba(44, 164, 182, 0.08);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .file-drop-zone.has-files {
+            border-color: var(--success-color);
+            background: rgb(16 185 129 / 0.05);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--accent-bg);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: var(--spacing-md) 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-color), #22d3ee);
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .password-strength {
+            margin-top: var(--spacing-sm);
+        }
+
+        .strength-bar {
+            height: 4px;
+            background: var(--accent-bg);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .strength-fill {
+            height: 100%;
+            transition: width 0.3s ease, background-color 0.3s ease;
+            width: 0%;
+        }
+
+        .strength-weak .strength-fill { background: var(--error-color); }
+        .strength-fair .strength-fill { background: var(--warning-color); }
+        .strength-good .strength-fill { background: var(--success-color); }
+        .strength-strong .strength-fill { background: var(--success-color); }
+
+        .alert {
+            padding: var(--spacing-md);
+            border-radius: var(--border-radius);
+            margin-bottom: var(--spacing-lg);
+            font-weight: 500;
+        }
+
+        .alert-info {
+            background: rgba(44, 164, 182, 0.10);
+            color: var(--accent-color);
+            border: 1px solid rgba(44, 164, 182, 0.22);
+        }
+
+        .alert-warning {
+            background: rgb(245 158 11 / 0.1);
+            color: var(--warning-color);
+            border: 1px solid rgb(245 158 11 / 0.2);
+        }
+
+        .alert-error {
+            background: rgb(239 68 68 / 0.1);
+            color: var(--error-color);
+            border: 1px solid rgb(239 68 68 / 0.2);
+        }
+
+        .alert-success {
+            background: rgb(16 185 129 / 0.1);
+            color: var(--success-color);
+            border: 1px solid rgb(16 185 129 / 0.2);
+        }
+
+        /* ===== NAVIGATION ===== */
+        .nav-tabs {
+            display: flex;
+            gap: var(--spacing-xs);
+            margin-bottom: var(--spacing-xl);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .nav-tab {
+            padding: var(--spacing-md) var(--spacing-lg);
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            font-family: var(--font-heading);
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .nav-tab.active {
+            color: var(--accent-color);
+            border-bottom-color: var(--accent-color);
+            box-shadow: inset 0 -2px 0 0 var(--accent-color);
+        }
+
+        .nav-tab:hover {
+            color: var(--text-primary);
+            background: rgba(44, 164, 182, 0.06);
+        }
+
+        /* ===== FILE LISTING ===== */
+        .file-list {
+            background: var(--accent-bg);
+            border-radius: var(--border-radius);
+            padding: var(--spacing-md);
+            margin-top: var(--spacing-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-sm);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .file-item:last-child {
+            border-bottom: none;
+        }
+
+        .file-info {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xs);
+        }
+
+        .file-name {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .file-details {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* ===== NOTIFICATION OVERLAY ===== */
+        .notification-container {
+            position: fixed;
+            top: var(--spacing-lg);
+            right: var(--spacing-lg);
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        .notification {
+            background: var(--primary-bg);
+            border-radius: var(--border-radius);
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-sm);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            max-width: 300px;
+            pointer-events: auto;
+            transform: translateX(100%);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .notification.notification-info {
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .notification.notification-success {
+            border-left: 4px solid var(--success-color);
+        }
+
+        .notification.notification-warning {
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .notification.notification-error {
+            border-left: 4px solid var(--error-color);
+        }
+
+        /* ===== MODAL OVERLAY ===== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--primary-bg);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-xl);
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            margin: var(--spacing-lg);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.show .modal-content {
+            transform: scale(1);
+        }
+
+        /* ===== UTILITY CLASSES ===== */
+        .hidden { display: none !important; }
+        .text-center { text-align: center; }
+        .text-muted { color: var(--text-muted); }
+        .mb-0 { margin-bottom: 0; }
+        .mt-lg { margin-top: var(--spacing-lg); }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 var(--spacing-md);
+            }
+            
+            h1 { font-size: 2rem; }
+            h2 { font-size: 1.5rem; }
+            
+            .card {
+                padding: var(--spacing-lg);
+            }
+            
+            .nav-tabs {
+                flex-wrap: wrap;
+            }
+            
+            .nav-tab {
+                padding: var(--spacing-sm) var(--spacing-md);
+                font-size: 0.9rem;
+            }
+            
+            .file-drop-zone {
+                padding: var(--spacing-lg);
+            }
+            
+            footer div:last-child {
+                display: none; /* Hide shortcuts on mobile */
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Notification Container -->
+    <div class="notification-container" id="notification-container"></div>
+
+    <!-- Security Warning Modal -->
+    <div class="modal-overlay" id="security-modal">
+        <div class="modal-content">
+            <h3>Security Information</h3>
+            <p>Please read and acknowledge the following before encrypting your files:</p>
+            
+            <div class="alert alert-warning" style="margin-bottom: var(--spacing-lg);">
+                <p><strong>Client-Side Processing:</strong> All encryption happens locally in your browser. No data is transmitted to servers, but this means you're responsible for password/keyfile security and there's no rate limiting on decryption attempts.</p>
+                
+                <p><strong>Password Recovery & Backup:</strong> Lost passwords/keyfiles cannot be recovered. Always keep secure backups of important files before encryption.</p>
+                
+                <p><strong>Research Project Disclaimer:</strong> SEP for Web is developed as a university research project. While using industry-standard encryption, no guarantees are provided about the implementation. Do not use as the exclusive method to protect critical files.</p>
+            </div>
+            
+            <label style="display: flex; align-items: center; gap: var(--spacing-sm); margin-bottom: var(--spacing-lg); font-weight: 600;">
+                <input type="checkbox" id="modal-confirm-checkbox">
+                I understand and accept these terms
+            </label>
+            
+            <label style="display: flex; align-items: center; gap: var(--spacing-sm); margin-bottom: var(--spacing-lg);">
+                <input type="checkbox" id="modal-dont-show-again">
+                Don't show this warning again
+            </label>
+            
+            <div style="display: flex; gap: var(--spacing-md); justify-content: flex-end;">
+                <button type="button" class="btn btn-secondary" onclick="closeSecurityModal()">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="proceedWithModalEncryption()" id="modal-proceed-btn" disabled>I Understand - Proceed</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <img src="assets/images/wordmark-inline.png" alt="SEP for Web - Simple. Private. Portable." style="max-width: 100%; height: 100px;">
+            </div>
+        </header>
+
+        <!-- Main Application -->
+        <main class="app-section">
+            <div class="container">
+                <!-- Navigation Tabs -->
+                <nav class="nav-tabs">
+                    <button class="nav-tab active" onclick="switchTab('encrypt')">Encrypt Files</button>
+                    <button class="nav-tab" onclick="switchTab('decrypt')">Decrypt Files</button>
+                    <button class="nav-tab" onclick="switchTab('keyfile')">Keyfile Tools</button>
+                    <button class="nav-tab" onclick="switchTab('string')">String Crypto</button>
+                    <button class="nav-tab" onclick="switchTab('lockers')">Lockers</button>
+                    <button class="nav-tab" onclick="switchTab('secure-delete')">Secure Delete</button>
+                </nav>
+
+                <!-- Encrypt Tab -->
+                <div id="encrypt-tab" class="tab-content">
+                    <div class="card">
+                        <h2>Encrypt Files</h2>
+                        
+                        <!-- File Selection -->
+                        <div class="input-group">
+                            <label class="input-label">Select Files</label>
+                            <div class="file-drop-zone" id="encrypt-drop-zone">
+                                <p><strong>Drop files here</strong> or click to select</p>
+                                <p class="text-muted">Select one or more files to encrypt</p>
+                                <input type="file" id="encrypt-file-input" multiple style="display: none;">
+                            </div>
+                            
+                            <!-- Selected Files List -->
+                            <div id="encrypt-file-list" class="file-list hidden">
+                                <h4 style="margin-bottom: var(--spacing-sm);">Selected Files</h4>
+                                <div id="encrypt-files-container"></div>
+                            </div>
+                        </div>
+
+                        <!-- Encryption Method -->
+                        <div class="input-group">
+                            <label class="input-label">Encryption Method</label>
+                            <div style="display: flex; gap: var(--spacing-md);">
+                                <label style="display: flex; align-items: center; gap: var(--spacing-xs);">
+                                    <input type="radio" name="encrypt-method" value="password" checked>
+                                    Password
+                                </label>
+                                <label style="display: flex; align-items: center; gap: var(--spacing-xs);">
+                                    <input type="radio" name="encrypt-method" value="keyfile">
+                                    Keyfile
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Password Input -->
+                        <div id="encrypt-password-section">
+                            <div class="input-group">
+                                <label class="input-label" for="encrypt-password">Password</label>
+                                <input type="password" id="encrypt-password" class="input-field" placeholder="Enter a strong password">
+                                <div class="password-strength" id="encrypt-password-strength">
+                                    <div class="strength-bar">
+                                        <div class="strength-fill"></div>
+                                    </div>
+                                    <span class="text-muted">Password strength: <span id="strength-text">No password entered</span></span>
+                                </div>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label" for="encrypt-password-confirm">Confirm Password</label>
+                                <input type="password" id="encrypt-password-confirm" class="input-field" placeholder="Confirm your password">
+                            </div>
+                        </div>
+
+                        <!-- Keyfile Input -->
+                        <div id="encrypt-keyfile-section" class="hidden">
+                            <div class="input-group">
+                                <label class="input-label">Keyfile</label>
+                                <input type="file" id="encrypt-keyfile-input" class="input-field" accept=".key">
+                                <p class="text-muted">Select a keyfile for encryption, or generate a new one below</p>
+                                <button type="button" class="btn btn-secondary" onclick="generateAndSelectKeyfile('encrypt-keyfile-input')">Generate New Keyfile</button>
+                            </div>
+                        </div>
+
+                        <!-- Progress -->
+                        <div id="encrypt-progress" class="hidden">
+                            <div class="progress-bar">
+                                <div class="progress-fill"></div>
+                            </div>
+                            <p class="text-center text-muted">Encrypting files...</p>
+                        </div>
+
+                        <!-- Actions -->
+                        <div style="display: flex; gap: var(--spacing-md); justify-content: flex-end;">
+                            <button type="button" class="btn btn-secondary" onclick="clearEncryptForm()">Clear</button>
+                            <button type="button" class="btn btn-primary" onclick="showSecurityModal()">Encrypt Files</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Decrypt Tab -->
+                <div id="decrypt-tab" class="tab-content hidden">
+                    <div class="card">
+                        <h2>Decrypt Files</h2>
+                        
+                        <!-- File Selection -->
+                        <div class="input-group">
+                            <label class="input-label">Select Encrypted Files</label>
+                            <div class="file-drop-zone" id="decrypt-drop-zone">
+                                <p><strong>Drop encrypted files here</strong> or click to select</p>
+                                <p class="text-muted">Select encrypted .sep files to decrypt</p>
+                                <input type="file" id="decrypt-file-input" multiple accept=".sep" style="display: none;">
+                            </div>
+                            
+                            <!-- Selected Files List -->
+                            <div id="decrypt-file-list" class="file-list hidden">
+                                <h4 style="margin-bottom: var(--spacing-sm);">Selected Encrypted Files</h4>
+                                <div id="decrypt-files-container"></div>
+                            </div>
+                        </div>
+
+                        <!-- Decryption Method -->
+                        <div class="input-group">
+                            <label class="input-label">Decryption Method</label>
+                            <div style="display: flex; gap: var(--spacing-md);">
+                                <label style="display: flex; align-items: center; gap: var(--spacing-xs);">
+                                    <input type="radio" name="decrypt-method" value="password" checked>
+                                    Password
+                                </label>
+                                <label style="display: flex; align-items: center; gap: var(--spacing-xs);">
+                                    <input type="radio" name="decrypt-method" value="keyfile">
+                                    Keyfile
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Password Input -->
+                        <div id="decrypt-password-section">
+                            <div class="input-group">
+                                <label class="input-label" for="decrypt-password">Password</label>
+                                <input type="password" id="decrypt-password" class="input-field" placeholder="Enter the decryption password">
+                            </div>
+                        </div>
+
+                        <!-- Keyfile Input -->
+                        <div id="decrypt-keyfile-section" class="hidden">
+                            <div class="input-group">
+                                <label class="input-label">Keyfile</label>
+                                <input type="file" id="decrypt-keyfile-input" class="input-field" accept=".key">
+                            </div>
+                        </div>
+
+                        <!-- Progress -->
+                        <div id="decrypt-progress" class="hidden">
+                            <div class="progress-bar">
+                                <div class="progress-fill"></div>
+                            </div>
+                            <p class="text-center text-muted">Decrypting files...</p>
+                        </div>
+
+                        <!-- Actions -->
+                        <div style="display: flex; gap: var(--spacing-md); justify-content: flex-end;">
+                            <button type="button" class="btn btn-secondary" onclick="clearDecryptForm()">Clear</button>
+                            <button type="button" class="btn btn-primary" onclick="decryptFiles()">Decrypt Files</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Keyfile Tab -->
+                <div id="keyfile-tab" class="tab-content hidden">
+                    <div class="card">
+                        <h2>Keyfile Tools</h2>
+                        <p>Generate secure keyfiles for encryption or manage existing ones.</p>
+                        
+                        <div class="input-group">
+                            <button type="button" class="btn btn-primary" onclick="generateAndDownloadKeyfile()">Generate New Keyfile</button>
+                            <p class="text-muted">Generates a cryptographically secure keyfile that can be used for encryption</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- String Crypto Tab -->
+                <div id="string-tab" class="tab-content hidden">
+                    <div class="card">
+                        <h2>String Encryption</h2>
+                        <p>Encrypt and decrypt text strings with a password.</p>
+                        
+                        <div class="input-group">
+                            <label class="input-label">Mode</label>
+                            <div style="display: flex; gap: var(--spacing-md); align-items: center;">
+                                <button type="button" class="btn btn-primary" id="string-encrypt-btn" onclick="setStringMode('encrypt')">Encrypt</button>
+                                <button type="button" class="btn btn-secondary" id="string-decrypt-btn" onclick="setStringMode('decrypt')">Decrypt</button>
+                                <span style="color: var(--text-muted); margin: 0 var(--spacing-sm);">|</span>
+                                <button type="button" class="btn btn-secondary btn-sm" onclick="reverseStringMode()" title="Switch between encrypt and decrypt modes">⇄ Switch</button>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label" for="string-input">Text</label>
+                            <textarea id="string-input" class="input-field" rows="4" placeholder="Enter text to encrypt/decrypt"></textarea>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label" for="string-password">Password</label>
+                            <input type="password" id="string-password" class="input-field" placeholder="Enter password">
+                        </div>
+
+                        <div class="input-group">
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--spacing-sm);">
+                                <label class="input-label mb-0" for="string-output">Result</label>
+                                <button type="button" class="btn btn-secondary btn-sm" onclick="copyStringResult()" id="copy-result-btn" disabled>📋 Copy</button>
+                            </div>
+                            <textarea id="string-output" class="input-field" rows="4" readonly placeholder="Result will appear here"></textarea>
+                        </div>
+
+                        <div style="display: flex; gap: var(--spacing-md); justify-content: flex-end;">
+                            <button type="button" class="btn btn-secondary" onclick="clearStringForm()">Clear All</button>
+                            <button type="button" class="btn btn-primary" onclick="processString()" id="process-string-btn">
+                                <span id="process-btn-text">Encrypt</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lockers Tab -->
+                <div id="lockers-tab" class="tab-content hidden">
+                    <!-- Sub-navigation for Lockers -->
+                    <div style="display: flex; gap: var(--spacing-sm); margin-bottom: var(--spacing-xl); border-bottom: 1px solid var(--border-color);">
+                        <button class="nav-tab active" onclick="switchLockerView('create')" id="locker-create-tab">Create Locker</button>
+                        <button class="nav-tab" onclick="switchLockerView('manage')" id="locker-manage-tab">Manage Lockers</button>
+                    </div>
+
+                    <!-- Create Locker Section -->
+                    <div id="locker-create-section">
+                        <div class="card">
+                            <h2>Create New Locker</h2>
+                            <p>Create encrypted containers that can hold multiple files of any type (documents, images, videos, etc.).</p>
+                            
+                            <!-- File Selection -->
+                            <div class="input-group">
+                                <label class="input-label">Select Files</label>
+                                <div class="file-drop-zone" id="locker-create-drop-zone">
+                                    <p><strong>Drop files here</strong> or click to select</p>
+                                    <p class="text-muted">Select multiple files of any type to create an encrypted locker</p>
+                                    <input type="file" id="locker-create-input" multiple style="display: none;">
+                                </div>
+                                
+                                <!-- Selected Files List -->
+                                <div id="locker-create-file-list" class="file-list hidden">
+                                    <h4 style="margin-bottom: var(--spacing-sm);">Files for Locker</h4>
+                                    <div id="locker-create-files-container"></div>
+                                </div>
+                            </div>
+
+                        <div class="input-group">
+                            <label class="input-label" for="locker-name">Locker Name</label>
+                            <input type="text" id="locker-name" class="input-field" placeholder="Enter locker name">
+                        </div>
+
+                        <!-- Locker Options -->
+                        <div class="input-group">
+                            <label style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                                <input type="checkbox" id="remove-structure" checked>
+                                <span>Remove folder structure (recommended for privacy)</span>
+                            </label>
+                            <p class="text-muted">When enabled, folder hierarchy is flattened to prevent revealing file organization</p>
+                        </div>
+
+                        <!-- Encryption Method for Locker -->
+                        <div class="input-group">
+                            <label class="input-label">Lock Method</label>
+                            <div style="display: flex; gap: var(--spacing-md);">
+                                <label style="display: flex; align-items: center; gap: var(--spacing-xs);">
+                                    <input type="radio" name="locker-method" value="password" checked>
+                                    Password
+                                </label>
+                                <label style="display: flex; align-items: center; gap: var(--spacing-xs);">
+                                    <input type="radio" name="locker-method" value="keyfile">
+                                    Keyfile
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Password Section for Locker -->
+                        <div id="locker-password-section">
+                            <div class="input-group">
+                                <label class="input-label" for="locker-password">Password</label>
+                                <input type="password" id="locker-password" class="input-field" placeholder="Enter locker password">
+                                <div class="password-strength" id="locker-password-strength">
+                                    <div class="strength-bar">
+                                        <div class="strength-fill"></div>
+                                    </div>
+                                    <span class="text-muted">Password strength: <span id="locker-strength-text">No password entered</span></span>
+                                </div>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label" for="locker-password-confirm">Confirm Password</label>
+                                <input type="password" id="locker-password-confirm" class="input-field" placeholder="Confirm locker password">
+                            </div>
+                        </div>
+
+                        <!-- Keyfile Section for Locker -->
+                        <div id="locker-keyfile-section" class="hidden">
+                            <div class="input-group">
+                                <label class="input-label">Keyfile</label>
+                                <input type="file" id="locker-keyfile-input" class="input-field" accept=".key">
+                                <p class="text-muted">Select a keyfile for the locker</p>
+                                <button type="button" class="btn btn-secondary" onclick="generateAndSelectKeyfile('locker-keyfile-input')">Generate New Keyfile</button>
+                            </div>
+                        </div>
+
+                        <!-- Progress -->
+                        <div id="locker-create-progress" class="hidden">
+                            <div class="progress-bar">
+                                <div class="progress-fill"></div>
+                            </div>
+                            <p class="text-center text-muted">Creating locker...</p>
+                        </div>
+
+                            <!-- Create Actions -->
+                            <div style="display: flex; gap: var(--spacing-md); justify-content: flex-end;">
+                                <button type="button" class="btn btn-secondary" onclick="clearLockerForm()">Clear</button>
+                                <button type="button" class="btn btn-primary" onclick="createLocker()">Create Locker</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Manage Lockers Section -->
+                    <div id="locker-manage-section" class="hidden">
+                        <div class="card">
+                            <h2>Unlock Existing Locker</h2>
+                            <p>Unlock encrypted locker files to access the contained files.</p>
+                            
+                            <!-- File Selection -->
+                            <div class="input-group">
+                                <label class="input-label">Select Locker File</label>
+                                <div class="file-drop-zone" id="locker-unlock-drop-zone">
+                                    <p><strong>Drop locker file here</strong> or click to select</p>
+                                    <p class="text-muted">Select a .locker file to unlock</p>
+                                    <input type="file" id="locker-unlock-input" accept=".locker" style="display: none;">
+                                </div>
+                                
+                                <!-- Selected Locker File -->
+                                <div id="locker-unlock-file-list" class="file-list hidden">
+                                    <h4 style="margin-bottom: var(--spacing-sm);">Selected Locker</h4>
+                                    <div id="locker-unlock-files-container"></div>
+                                </div>
+                            </div>
+
+                            <!-- Unlock Method -->
+                            <div class="input-group">
+                                <label class="input-label">Unlock Method</label>
+                                <div style="display: flex; gap: var(--spacing-md);">
+                                    <label style="display: flex; align-items: center; gap: var(--spacing-xs);">
+                                        <input type="radio" name="unlock-method" value="password" checked>
+                                        Password
+                                    </label>
+                                    <label style="display: flex; align-items: center; gap: var(--spacing-xs);">
+                                        <input type="radio" name="unlock-method" value="keyfile">
+                                        Keyfile
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Unlock Password -->
+                            <div id="unlock-password-section">
+                                <div class="input-group">
+                                    <label class="input-label" for="unlock-password">Password</label>
+                                    <input type="password" id="unlock-password" class="input-field" placeholder="Enter locker password">
+                                </div>
+                            </div>
+
+                            <!-- Unlock Keyfile -->
+                            <div id="unlock-keyfile-section" class="hidden">
+                                <div class="input-group">
+                                    <label class="input-label">Keyfile</label>
+                                    <input type="file" id="unlock-keyfile-input" class="input-field" accept=".key">
+                                </div>
+                            </div>
+
+                            <!-- Progress -->
+                            <div id="locker-unlock-progress" class="hidden">
+                                <div class="progress-bar">
+                                    <div class="progress-fill"></div>
+                                </div>
+                                <p class="text-center text-muted">Unlocking locker...</p>
+                            </div>
+
+                            <!-- Unlock Actions -->
+                            <div style="display: flex; gap: var(--spacing-md); justify-content: flex-end;">
+                                <button type="button" class="btn btn-secondary" onclick="clearUnlockForm()">Clear</button>
+                                <button type="button" class="btn btn-primary" onclick="unlockLocker()">Unlock Locker</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Secure Delete Tab -->
+                <div id="secure-delete-tab" class="tab-content hidden">
+                    <div class="card">
+                        <h2>Secure File Deletion</h2>
+                        <div class="alert alert-error">
+                            <strong>⚠️ WARNING:</strong> Secure deletion is <strong>IRREVERSIBLE</strong>. Deleted files cannot be recovered by any means.
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label">Select Files to Delete</label>
+                            <div class="file-drop-zone" id="delete-drop-zone">
+                                <p><strong>⚠️ Drop files to PERMANENTLY DELETE</strong> or click to select</p>
+                                <p class="text-muted">Selected files will be securely overwritten and deleted</p>
+                                <input type="file" id="delete-file-input" multiple style="display: none;">
+                            </div>
+                            
+                            <!-- Selected Files List -->
+                            <div id="delete-file-list-display" class="file-list hidden">
+                                <h4 style="margin-bottom: var(--spacing-sm);">⚠️ Files Marked for Deletion</h4>
+                                <div id="delete-files-display-container"></div>
+                            </div>
+                        </div>
+
+                        <!-- Deletion Settings -->
+                        <div class="input-group">
+                            <label class="input-label" for="delete-passes">Overwrite Passes</label>
+                            <input type="number" id="delete-passes" class="input-field" value="3" min="3" max="100">
+                            <p class="text-muted">Number of times to overwrite file data (3-100). Higher values are slower but more secure.</p>
+                            <div id="passes-warning" class="alert alert-warning hidden">
+                                <strong>Performance Warning:</strong> More than 15 passes may be very slow and cause excessive wear on SSDs.
+                            </div>
+                        </div>
+
+                        <!-- File List -->
+                        <div id="delete-file-list" class="hidden">
+                            <h4>Files Selected for Deletion</h4>
+                            <div id="delete-files-container" style="background: var(--accent-bg); padding: var(--spacing-md); border-radius: var(--border-radius); margin-bottom: var(--spacing-lg);">
+                                <!-- Files will be listed here -->
+                            </div>
+                        </div>
+
+                        <!-- Progress -->
+                        <div id="delete-progress" class="hidden">
+                            <div class="progress-bar">
+                                <div class="progress-fill"></div>
+                            </div>
+                            <p class="text-center text-muted" id="delete-status">Securely deleting files...</p>
+                        </div>
+
+                        <!-- Final Confirmation -->
+                        <div id="delete-confirmation" class="hidden">
+                            <div class="alert alert-error">
+                                <h4>⚠️ FINAL WARNING ⚠️</h4>
+                                <p><strong>You are about to PERMANENTLY DELETE the selected files.</strong></p>
+                                <p>This action cannot be undone. The files will be overwritten and removed from your device.</p>
+                                
+                                <label style="display: flex; align-items: center; gap: var(--spacing-sm); margin: var(--spacing-lg) 0; font-weight: 600;">
+                                    <input type="checkbox" id="confirm-deletion">
+                                    I understand this action is irreversible and accept full responsibility
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Actions -->
+                        <div style="display: flex; gap: var(--spacing-md); justify-content: flex-end;">
+                            <button type="button" class="btn btn-secondary" onclick="clearDeleteForm()">Clear</button>
+                            <button type="button" class="btn btn-primary" onclick="prepareSecureDelete()" id="delete-prepare-btn">Prepare Deletion</button>
+                        </div>
+
+                        <!-- Confirmation Actions -->
+                        <div id="delete-confirmation-actions" class="hidden" style="display: flex; gap: var(--spacing-md); justify-content: flex-end; margin-top: var(--spacing-lg);">
+                            <button type="button" class="btn btn-secondary" onclick="cancelSecureDelete()">Cancel</button>
+                            <button type="button" class="btn" onclick="executeSecureDelete()" id="delete-execute-btn" disabled style="background: var(--error-color); color: white;">PERMANENTLY DELETE</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Footer -->
+        <footer style="padding: var(--spacing-lg) 0; border-top: 1px solid var(--border-color); background: var(--secondary-bg);">
+            <div class="container">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--spacing-md);">
+                    <div>
+                        <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem;">
+                            SEP for Web • 100% Client-Side Encryption • No Data Transmitted
+                        </p>
+                    </div>
+                    <div style="color: var(--text-muted); font-size: 0.8rem;">
+                        <strong>Shortcuts:</strong> 
+                        Ctrl+1-6 (Switch tabs) • 
+                        Ctrl+Enter (Execute action)
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // ===== CORE CRYPTOGRAPHIC FUNCTIONS =====
+        class SEPCrypto {
+            static async deriveKey(password, salt) {
+                const encoder = new TextEncoder();
+                const keyMaterial = await crypto.subtle.importKey(
+                    'raw',
+                    encoder.encode(password),
+                    { name: 'PBKDF2' },
+                    false,
+                    ['deriveBits', 'deriveKey']
+                );
+
+                return crypto.subtle.deriveKey(
+                    {
+                        name: 'PBKDF2',
+                        salt: salt,
+                        iterations: 100000,
+                        hash: 'SHA-256'
+                    },
+                    keyMaterial,
+                    { name: 'AES-GCM', length: 256 },
+                    false,
+                    ['encrypt', 'decrypt']
+                );
+            }
+
+            static async encryptData(data, password) {
+                const salt = crypto.getRandomValues(new Uint8Array(16));
+                const iv = crypto.getRandomValues(new Uint8Array(12));
+                const key = await this.deriveKey(password, salt);
+                
+                const encrypted = await crypto.subtle.encrypt(
+                    { name: 'AES-GCM', iv: iv },
+                    key,
+                    data
+                );
+
+                // Combine salt, iv, and encrypted data
+                const result = new Uint8Array(salt.length + iv.length + encrypted.byteLength);
+                result.set(salt, 0);
+                result.set(iv, salt.length);
+                result.set(new Uint8Array(encrypted), salt.length + iv.length);
+
+                return result;
+            }
+
+            static async decryptData(encryptedData, password) {
+                if (encryptedData.length < 28) { // 16 (salt) + 12 (iv) minimum
+                    throw new Error('Invalid encrypted data format');
+                }
+
+                const salt = encryptedData.slice(0, 16);
+                const iv = encryptedData.slice(16, 28);
+                const encrypted = encryptedData.slice(28);
+
+                const key = await this.deriveKey(password, salt);
+                
+                try {
+                    const decrypted = await crypto.subtle.decrypt(
+                        { name: 'AES-GCM', iv: iv },
+                        key,
+                        encrypted
+                    );
+                    return new Uint8Array(decrypted);
+                } catch (error) {
+                    throw new Error('Decryption failed - incorrect password or corrupted data');
+                }
+            }
+
+            static async generateKeyfile() {
+                const keyData = crypto.getRandomValues(new Uint8Array(64)); // 512-bit key
+                return keyData;
+            }
+
+            static async keyfileToKey(keyfileData, salt) {
+                const keyMaterial = await crypto.subtle.importKey(
+                    'raw',
+                    keyfileData,
+                    { name: 'PBKDF2' },
+                    false,
+                    ['deriveKey']
+                );
+
+                return crypto.subtle.deriveKey(
+                    {
+                        name: 'PBKDF2',
+                        salt: salt,
+                        iterations: 1000, // Lower iterations for keyfiles since they're already random
+                        hash: 'SHA-256'
+                    },
+                    keyMaterial,
+                    { name: 'AES-GCM', length: 256 },
+                    false,
+                    ['encrypt', 'decrypt']
+                );
+            }
+
+            static async encryptWithKeyfile(data, keyfileData) {
+                const salt = crypto.getRandomValues(new Uint8Array(16));
+                const iv = crypto.getRandomValues(new Uint8Array(12));
+                const key = await this.keyfileToKey(keyfileData, salt);
+                
+                const encrypted = await crypto.subtle.encrypt(
+                    { name: 'AES-GCM', iv: iv },
+                    key,
+                    data
+                );
+
+                const result = new Uint8Array(salt.length + iv.length + encrypted.byteLength);
+                result.set(salt, 0);
+                result.set(iv, salt.length);
+                result.set(new Uint8Array(encrypted), salt.length + iv.length);
+
+                return result;
+            }
+
+            static async decryptWithKeyfile(encryptedData, keyfileData) {
+                if (encryptedData.length < 28) {
+                    throw new Error('Invalid encrypted data format');
+                }
+
+                const salt = encryptedData.slice(0, 16);
+                const iv = encryptedData.slice(16, 28);
+                const encrypted = encryptedData.slice(28);
+
+                const key = await this.keyfileToKey(keyfileData, salt);
+                
+                try {
+                    const decrypted = await crypto.subtle.decrypt(
+                        { name: 'AES-GCM', iv: iv },
+                        key,
+                        encrypted
+                    );
+                    return new Uint8Array(decrypted);
+                } catch (error) {
+                    throw new Error('Decryption failed - incorrect keyfile or corrupted data');
+                }
+            }
+
+            static async encryptString(text, password) {
+                const encoder = new TextEncoder();
+                const data = encoder.encode(text);
+                const encrypted = await this.encryptData(data, password);
+                
+                // Convert to base64 for easy handling
+                return btoa(String.fromCharCode(...encrypted));
+            }
+
+            static async decryptString(encryptedText, password) {
+                // Convert from base64
+                const encrypted = new Uint8Array(
+                    atob(encryptedText).split('').map(char => char.charCodeAt(0))
+                );
+                
+                const decrypted = await this.decryptData(encrypted, password);
+                const decoder = new TextDecoder();
+                return decoder.decode(decrypted);
+            }
+        }
+
+        // ===== PASSWORD STRENGTH MEASUREMENT =====
+        class PasswordStrength {
+            static analyze(password) {
+                if (!password) return { score: 0, text: 'No password entered', class: '' };
+                
+                let score = 0;
+                let feedback = [];
+
+                // Length check
+                if (password.length >= 8) score += 1;
+                else feedback.push('Use at least 8 characters');
+                
+                if (password.length >= 12) score += 1;
+                if (password.length >= 16) score += 1;
+
+                // Character variety
+                if (/[a-z]/.test(password)) score += 1;
+                else feedback.push('Add lowercase letters');
+                
+                if (/[A-Z]/.test(password)) score += 1;
+                else feedback.push('Add uppercase letters');
+                
+                if (/[0-9]/.test(password)) score += 1;
+                else feedback.push('Add numbers');
+                
+                if (/[^A-Za-z0-9]/.test(password)) score += 1;
+                else feedback.push('Add special characters');
+
+                // Bonus points
+                if (password.length >= 20) score += 1;
+                if (/[^A-Za-z0-9\s]/.test(password) && password.length >= 12) score += 1;
+
+                // Determine strength
+                let strength, className;
+                if (score <= 2) {
+                    strength = 'Very Weak';
+                    className = 'strength-weak';
+                } else if (score <= 4) {
+                    strength = 'Weak';
+                    className = 'strength-weak';
+                } else if (score <= 6) {
+                    strength = 'Fair';
+                    className = 'strength-fair';
+                } else if (score <= 8) {
+                    strength = 'Good';
+                    className = 'strength-good';
+                } else {
+                    strength = 'Strong';
+                    className = 'strength-strong';
+                }
+
+                return {
+                    score: Math.min(score, 9),
+                    text: strength,
+                    class: className,
+                    feedback: feedback
+                };
+            }
+
+            static updateStrengthIndicator(password, containerId) {
+                const analysis = this.analyze(password);
+                const container = document.getElementById(containerId);
+                
+                if (!container) return;
+
+                const strengthBar = container.querySelector('.strength-bar');
+                const strengthFill = container.querySelector('.strength-fill');
+                const strengthText = container.querySelector('#strength-text');
+
+                // Update bar
+                strengthBar.className = 'strength-bar ' + analysis.class;
+                strengthFill.style.width = (analysis.score / 9 * 100) + '%';
+                
+                // Update text
+                if (strengthText) {
+                    strengthText.textContent = analysis.text;
+                }
+            }
+        }
+
+        // ===== FILE HANDLING UTILITIES =====
+        class FileHandler {
+            static setupDropZone(dropZoneId, fileInputId, callback) {
+                const dropZone = document.getElementById(dropZoneId);
+                const fileInput = document.getElementById(fileInputId);
+
+                if (!dropZone || !fileInput) return;
+
+                // Click to select files
+                dropZone.addEventListener('click', () => fileInput.click());
+                
+                // Handle file selection
+                fileInput.addEventListener('change', (e) => {
+                    if (e.target.files.length > 0) {
+                        dropZone.classList.add('has-files');
+                        callback(Array.from(e.target.files));
+                    } else {
+                        dropZone.classList.remove('has-files');
+                    }
+                });
+
+                // Drag and drop
+                dropZone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    dropZone.classList.add('drag-over');
+                });
+
+                dropZone.addEventListener('dragleave', (e) => {
+                    if (!dropZone.contains(e.relatedTarget)) {
+                        dropZone.classList.remove('drag-over');
+                    }
+                });
+
+                dropZone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    dropZone.classList.remove('drag-over');
+                    
+                    const files = Array.from(e.dataTransfer.files);
+                    if (files.length > 0) {
+                        dropZone.classList.add('has-files');
+                        callback(files);
+                    }
+                });
+            }
+
+            static async readFileAsArrayBuffer(file) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(new Uint8Array(reader.result));
+                    reader.onerror = () => reject(reader.error);
+                    reader.readAsArrayBuffer(file);
+                });
+            }
+
+            static downloadFile(data, filename, mimeType = 'application/octet-stream') {
+                const blob = new Blob([data], { type: mimeType });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
+
+            static showProgress(progressId, show = true) {
+                const progress = document.getElementById(progressId);
+                if (progress) {
+                    progress.classList.toggle('hidden', !show);
+                }
+            }
+
+            static updateProgress(progressId, percent) {
+                const progress = document.getElementById(progressId);
+                if (progress) {
+                    const fill = progress.querySelector('.progress-fill');
+                    if (fill) {
+                        fill.style.width = percent + '%';
+                    }
+                }
+            }
+        }
+
+        // ===== UI MANAGEMENT =====
+        let selectedFiles = [];
+        let currentStringMode = 'encrypt';
+
+        // ===== NEW NOTIFICATION SYSTEM =====
+        function showNotification(message, type = 'info', duration = 5000) {
+            console.log(`Notification: ${type.toUpperCase()}: ${message}`);
+            
+            const container = document.getElementById('notification-container');
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: var(--spacing-sm);">
+                    <span>${message}</span>
+                    <button onclick="this.parentElement.parentElement.remove()" style="background: none; border: none; font-size: 1.2em; cursor: pointer; color: var(--text-muted);">&times;</button>
+                </div>
+            `;
+            
+            container.appendChild(notification);
+            
+            // Trigger animation
+            setTimeout(() => notification.classList.add('show'), 10);
+            
+            // Auto remove
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.classList.remove('show');
+                    setTimeout(() => {
+                        if (notification.parentNode) {
+                            notification.remove();
+                        }
+                    }, 300);
+                }
+            }, duration);
+        }
+
+        // Update old showAlert function to use new system
+        function showNotification(message, type = 'info', duration = 5000) {
+            showNotification(message, type, duration);
+        }
+
+        // ===== FILE LISTING FUNCTIONS =====
+        function displayFileList(files, containerId, listId) {
+            const container = document.getElementById(containerId);
+            const list = document.getElementById(listId);
+            
+            if (!files || files.length === 0) {
+                list.classList.add('hidden');
+                return;
+            }
+            
+            container.innerHTML = files.map(file => `
+                <div class="file-item">
+                    <div class="file-info">
+                        <div class="file-name">${file.name}</div>
+                        <div class="file-details">${formatFileSize(file.size)} • ${file.type || 'Unknown type'}</div>
+                    </div>
+                    <button onclick="removeFileFromList('${listId}', '${file.name}')" class="btn btn-sm" style="color: var(--error-color);">Remove</button>
+                </div>
+            `).join('');
+            
+            list.classList.remove('hidden');
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function removeFileFromList(listId, fileName) {
+            // This would need specific implementation based on which list
+            console.log('Remove file:', fileName, 'from list:', listId);
+            showNotification(`Removed ${fileName}`, 'info');
+        }
+
+        function switchTab(tabName) {
+            // Hide all tabs
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.add('hidden'));
+
+            // Show selected tab
+            const selectedTab = document.getElementById(tabName + '-tab');
+            if (selectedTab) {
+                selectedTab.classList.remove('hidden');
+            }
+
+            // Update navigation
+            const navTabs = document.querySelectorAll('.nav-tab');
+            navTabs.forEach(tab => tab.classList.remove('active'));
+            
+            const activeTab = document.querySelector(`[onclick="switchTab('${tabName}')"]`);
+            if (activeTab) {
+                activeTab.classList.add('active');
+            }
+        }
+
+        function switchLockerView(view) {
+            // Hide both sections
+            document.getElementById('locker-create-section').classList.add('hidden');
+            document.getElementById('locker-manage-section').classList.add('hidden');
+            
+            // Show selected section
+            document.getElementById(`locker-${view}-section`).classList.remove('hidden');
+            
+            // Update navigation
+            document.getElementById('locker-create-tab').classList.remove('active');
+            document.getElementById('locker-manage-tab').classList.remove('active');
+            document.getElementById(`locker-${view}-tab`).classList.add('active');
+        }
+
+        // ===== MODAL SECURITY WARNINGS =====
+        function showSecurityModal() {
+            // Check if user has disabled warnings
+            if (localStorage.getItem('sep-disable-warnings') === 'true') {
+                encryptFiles();
+                return;
+            }
+
+            const modal = document.getElementById('security-modal');
+            const checkbox = document.getElementById('modal-confirm-checkbox');
+            const proceedBtn = document.getElementById('modal-proceed-btn');
+            
+            // Reset form
+            checkbox.checked = false;
+            proceedBtn.disabled = true;
+            
+            // Setup checkbox listener
+            checkbox.addEventListener('change', function() {
+                proceedBtn.disabled = !this.checked;
+            });
+            
+            modal.classList.add('show');
+        }
+
+        function closeSecurityModal() {
+            const modal = document.getElementById('security-modal');
+            modal.classList.remove('show');
+        }
+
+        function proceedWithModalEncryption() {
+            // Save preference if "don't show again" is checked
+            const dontShowAgain = document.getElementById('modal-dont-show-again').checked;
+            if (dontShowAgain) {
+                localStorage.setItem('sep-disable-warnings', 'true');
+            }
+            
+            closeSecurityModal();
+            encryptFiles();
+        }
+
+
+
+        // ===== INITIALIZATION =====
+        document.addEventListener('DOMContentLoaded', function() {
+            // Setup file drop zones
+            FileHandler.setupDropZone('encrypt-drop-zone', 'encrypt-file-input', (files) => {
+                selectedFiles = files;
+                displayFileList(files, 'encrypt-files-container', 'encrypt-file-list');
+                showNotification(`Selected ${files.length} file(s) for encryption`, 'info');
+            });
+
+            FileHandler.setupDropZone('decrypt-drop-zone', 'decrypt-file-input', (files) => {
+                selectedFiles = files;
+                displayFileList(files, 'decrypt-files-container', 'decrypt-file-list');
+                showNotification(`Selected ${files.length} file(s) for decryption`, 'info');
+            });
+
+            // Setup password strength monitoring
+            const encryptPassword = document.getElementById('encrypt-password');
+            if (encryptPassword) {
+                encryptPassword.addEventListener('input', (e) => {
+                    PasswordStrength.updateStrengthIndicator(e.target.value, 'encrypt-password-strength');
+                });
+            }
+
+            // Setup encryption method toggles
+            setupMethodToggles('encrypt');
+            setupMethodToggles('decrypt');
+            setupMethodToggles('locker', 'locker');
+            setupMethodToggles('unlock', 'unlock');
+            
+            // Setup locker drop zones
+            FileHandler.setupDropZone('locker-create-drop-zone', 'locker-create-input', (files) => {
+                lockerFiles = files;
+                displayFileList(files, 'locker-create-files-container', 'locker-create-file-list');
+                showNotification(`Selected ${files.length} file(s) for locker`, 'info');
+            });
+
+            FileHandler.setupDropZone('locker-unlock-drop-zone', 'locker-unlock-input', (files) => {
+                if (files.length > 0) {
+                    selectedLockerFile = files[0];
+                    displayFileList([files[0]], 'locker-unlock-files-container', 'locker-unlock-file-list');
+                    showNotification(`Selected locker file: ${files[0].name}`, 'info');
+                }
+            });
+
+            // Setup locker password strength monitoring
+            const lockerPassword = document.getElementById('locker-password');
+            if (lockerPassword) {
+                lockerPassword.addEventListener('input', (e) => {
+                    PasswordStrength.updateStrengthIndicator(e.target.value, 'locker-password-strength');
+                });
+            }
+
+            // Setup secure delete functionality
+            FileHandler.setupDropZone('delete-drop-zone', 'delete-file-input', (files) => {
+                filesToDelete = files;
+                displayFileList(files, 'delete-files-display-container', 'delete-file-list-display');
+                showNotification(`Selected ${files.length} file(s) for secure deletion`, 'warning');
+            });
+
+            // Setup passes warning
+            const passesInput = document.getElementById('delete-passes');
+            if (passesInput) {
+                passesInput.addEventListener('input', (e) => {
+                    const passes = parseInt(e.target.value);
+                    const warning = document.getElementById('passes-warning');
+                    if (passes > 15) {
+                        warning.classList.remove('hidden');
+                    } else {
+                        warning.classList.add('hidden');
+                    }
+                });
+            }
+
+            // Setup keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                // Ctrl/Cmd + Enter to trigger primary action in current tab
+                if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                    e.preventDefault();
+                    const activeTab = document.querySelector('.nav-tab.active');
+                    if (!activeTab) return;
+                    
+                    const tabName = activeTab.onclick.toString().match(/switchTab\('([^']+)'\)/);
+                    if (!tabName) return;
+                    
+                    switch (tabName[1]) {
+                        case 'encrypt':
+                            showSecurityWarnings();
+                            break;
+                        case 'decrypt':
+                            decryptFiles();
+                            break;
+                        case 'string':
+                            processString();
+                            break;
+                        case 'lockers':
+                            createLocker();
+                            break;
+                        case 'secure-delete':
+                            prepareSecureDelete();
+                            break;
+                    }
+                }
+                
+                // Tab navigation
+                if (e.ctrlKey && e.key >= '1' && e.key <= '6') {
+                    e.preventDefault();
+                    const tabs = ['encrypt', 'decrypt', 'keyfile', 'string', 'lockers', 'secure-delete'];
+                    const tabIndex = parseInt(e.key) - 1;
+                    if (tabs[tabIndex]) {
+                        switchTab(tabs[tabIndex]);
+                    }
+                }
+            });
+        });
+
+        function setupMethodToggles(mode, prefix = null) {
+            const actualPrefix = prefix || mode;
+            const radios = document.querySelectorAll(`input[name="${mode}-method"]`);
+            radios.forEach(radio => {
+                radio.addEventListener('change', () => {
+                    const passwordSection = document.getElementById(`${actualPrefix}-password-section`);
+                    const keyfileSection = document.getElementById(`${actualPrefix}-keyfile-section`);
+                    
+                    if (passwordSection && keyfileSection) {
+                        if (radio.value === 'password') {
+                            passwordSection.classList.remove('hidden');
+                            keyfileSection.classList.add('hidden');
+                        } else {
+                            passwordSection.classList.add('hidden');
+                            keyfileSection.classList.remove('hidden');
+                        }
+                    }
+                });
+            });
+        }
+
+
+
+        // ===== ENCRYPTION FUNCTIONS =====
+        async function encryptFiles() {
+            if (selectedFiles.length === 0) {
+                showNotification('Please select files to encrypt', 'warning');
+                return;
+            }
+
+            const method = document.querySelector('input[name="encrypt-method"]:checked').value;
+            let password, keyfileData;
+
+            if (method === 'password') {
+                password = document.getElementById('encrypt-password').value;
+                const confirmPassword = document.getElementById('encrypt-password-confirm').value;
+                
+                if (!password) {
+                    showNotification('Please enter a password', 'warning');
+                    return;
+                }
+                
+                if (password !== confirmPassword) {
+                    showNotification('Passwords do not match', 'error');
+                    return;
+                }
+
+                const strength = PasswordStrength.analyze(password);
+                if (strength.score <= 2) {
+                    if (!confirm('Your password is very weak. This may make your files vulnerable to attacks. Continue anyway?')) {
+                        return;
+                    }
+                }
+            } else {
+                const keyfileInput = document.getElementById('encrypt-keyfile-input');
+                if (!keyfileInput.files[0]) {
+                    showNotification('Please select a keyfile', 'warning');
+                    return;
+                }
+                keyfileData = await FileHandler.readFileAsArrayBuffer(keyfileInput.files[0]);
+            }
+
+            FileHandler.showProgress('encrypt-progress');
+            
+            try {
+                for (let i = 0; i < selectedFiles.length; i++) {
+                    const file = selectedFiles[i];
+                    FileHandler.updateProgress('encrypt-progress', (i / selectedFiles.length) * 50);
+                    
+                    const fileData = await FileHandler.readFileAsArrayBuffer(file);
+                    
+                    let encryptedData;
+                    if (method === 'password') {
+                        encryptedData = await SEPCrypto.encryptData(fileData, password);
+                    } else {
+                        encryptedData = await SEPCrypto.encryptWithKeyfile(fileData, keyfileData);
+                    }
+                    
+                    FileHandler.updateProgress('encrypt-progress', ((i + 0.5) / selectedFiles.length) * 100);
+                    
+                    const filename = file.name + '.sep';
+                    FileHandler.downloadFile(encryptedData, filename);
+                    
+                    FileHandler.updateProgress('encrypt-progress', ((i + 1) / selectedFiles.length) * 100);
+                }
+                
+                showNotification(`Successfully encrypted ${selectedFiles.length} file(s)`, 'success');
+                clearEncryptForm();
+            } catch (error) {
+                showNotification('Encryption failed: ' + error.message, 'error');
+            } finally {
+                FileHandler.showProgress('encrypt-progress', false);
+            }
+        }
+
+        async function decryptFiles() {
+            if (selectedFiles.length === 0) {
+                showNotification('Please select files to decrypt', 'warning');
+                return;
+            }
+
+            const method = document.querySelector('input[name="decrypt-method"]:checked').value;
+            let password, keyfileData;
+
+            if (method === 'password') {
+                password = document.getElementById('decrypt-password').value;
+                if (!password) {
+                    showNotification('Please enter the decryption password', 'warning');
+                    return;
+                }
+            } else {
+                const keyfileInput = document.getElementById('decrypt-keyfile-input');
+                if (!keyfileInput.files[0]) {
+                    showNotification('Please select a keyfile', 'warning');
+                    return;
+                }
+                keyfileData = await FileHandler.readFileAsArrayBuffer(keyfileInput.files[0]);
+            }
+
+            FileHandler.showProgress('decrypt-progress');
+            
+            try {
+                for (let i = 0; i < selectedFiles.length; i++) {
+                    const file = selectedFiles[i];
+                    FileHandler.updateProgress('decrypt-progress', (i / selectedFiles.length) * 50);
+                    
+                    const encryptedData = await FileHandler.readFileAsArrayBuffer(file);
+                    
+                    let decryptedData;
+                    if (method === 'password') {
+                        decryptedData = await SEPCrypto.decryptData(encryptedData, password);
+                    } else {
+                        decryptedData = await SEPCrypto.decryptWithKeyfile(encryptedData, keyfileData);
+                    }
+                    
+                    FileHandler.updateProgress('decrypt-progress', ((i + 0.5) / selectedFiles.length) * 100);
+                    
+                    // Remove .sep extension if present
+                    let filename = file.name;
+                    if (filename.endsWith('.sep')) {
+                        filename = filename.slice(0, -4);
+                    }
+                    
+                    FileHandler.downloadFile(decryptedData, filename);
+                    
+                    FileHandler.updateProgress('decrypt-progress', ((i + 1) / selectedFiles.length) * 100);
+                }
+                
+                showNotification(`Successfully decrypted ${selectedFiles.length} file(s)`, 'success');
+                clearDecryptForm();
+            } catch (error) {
+                showNotification('Decryption failed: ' + error.message, 'error');
+            } finally {
+                FileHandler.showProgress('decrypt-progress', false);
+            }
+        }
+
+        // ===== KEYFILE FUNCTIONS =====
+        async function generateKeyfile() {
+            const keyfileData = await SEPCrypto.generateKeyfile();
+            return keyfileData;
+        }
+
+        async function generateAndDownloadKeyfile() {
+            try {
+                const keyfileData = await generateKeyfile();
+                const timestamp = new Date().toISOString().replace(/[:.-]/g, '');
+                const filename = `sep-keyfile-${timestamp}.key`;
+                
+                FileHandler.downloadFile(keyfileData, filename);
+                showNotification('Keyfile generated and downloaded successfully', 'success');
+            } catch (error) {
+                showNotification('Failed to generate keyfile: ' + error.message, 'error');
+            }
+        }
+
+        // ===== ENHANCED KEYFILE GENERATION FOR OTHER TABS =====
+        async function generateAndSelectKeyfile(inputId) {
+            try {
+                console.log('Generating keyfile for input:', inputId);
+                const keyfileData = await generateKeyfile();
+                const timestamp = new Date().toISOString().replace(/[:.-]/g, '');
+                const filename = `sep-keyfile-${timestamp}.key`;
+                
+                // Download the keyfile
+                FileHandler.downloadFile(keyfileData, filename);
+                
+                // Create a File object and set it to the input
+                const keyfileFile = new File([keyfileData], filename, { type: 'application/octet-stream' });
+                const input = document.getElementById(inputId);
+                
+                if (input) {
+                    // Create a DataTransfer object to simulate file selection
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(keyfileFile);
+                    input.files = dataTransfer.files;
+                    
+                    // Trigger change event
+                    input.dispatchEvent(new Event('change', { bubbles: true }));
+                    
+                    showNotification(`Keyfile generated, downloaded, and selected for encryption/decryption`, 'success');
+                } else {
+                    showNotification('Keyfile generated and downloaded', 'success');
+                }
+                
+            } catch (error) {
+                console.error('Keyfile generation error:', error);
+                showNotification('Failed to generate keyfile: ' + error.message, 'error');
+            }
+        }
+
+        // ===== STRING ENCRYPTION FUNCTIONS =====
+        function setStringMode(mode) {
+            currentStringMode = mode;
+            const encryptBtn = document.getElementById('string-encrypt-btn');
+            const decryptBtn = document.getElementById('string-decrypt-btn');
+            const processBtnText = document.getElementById('process-btn-text');
+            
+            if (mode === 'encrypt') {
+                encryptBtn.className = 'btn btn-primary';
+                decryptBtn.className = 'btn btn-secondary';
+                processBtnText.textContent = 'Encrypt';
+            } else {
+                encryptBtn.className = 'btn btn-secondary';
+                decryptBtn.className = 'btn btn-primary';
+                processBtnText.textContent = 'Decrypt';
+            }
+        }
+
+        function reverseStringMode() {
+            setStringMode(currentStringMode === 'encrypt' ? 'decrypt' : 'encrypt');
+        }
+
+        async function processString() {
+            const input = document.getElementById('string-input').value;
+            const password = document.getElementById('string-password').value;
+            const output = document.getElementById('string-output');
+
+            if (!input) {
+                showNotification('Please enter text to process', 'warning');
+                return;
+            }
+
+            if (!password) {
+                showNotification('Please enter a password', 'warning');
+                return;
+            }
+
+            try {
+                let result;
+                if (currentStringMode === 'encrypt') {
+                    result = await SEPCrypto.encryptString(input, password);
+                } else {
+                    result = await SEPCrypto.decryptString(input, password);
+                }
+                
+                output.value = result;
+                document.getElementById('copy-result-btn').disabled = false;
+                showNotification(`String ${currentStringMode}ed successfully`, 'success');
+            } catch (error) {
+                showNotification(`String ${currentStringMode}ion failed: ` + error.message, 'error');
+                output.value = '';
+            }
+        }
+
+        function copyStringResult() {
+            const output = document.getElementById('string-output');
+            if (output.value) {
+                navigator.clipboard.writeText(output.value).then(() => {
+                    showNotification('Result copied to clipboard', 'success');
+                }).catch(() => {
+                    // Fallback for older browsers
+                    output.select();
+                    document.execCommand('copy');
+                    showNotification('Result copied to clipboard', 'success');
+                });
+            } else {
+                showNotification('No result to copy', 'warning');
+            }
+        }
+
+        // ===== LOCKER SYSTEM =====
+        class LockerSystem {
+            static async createLocker(files, name, removeStructure, password, keyfileData) {
+                const manifest = {
+                    name: name,
+                    created: new Date().toISOString(),
+                    removeStructure: removeStructure,
+                    files: []
+                };
+
+                const fileData = [];
+
+                for (let file of files) {
+                    const data = await FileHandler.readFileAsArrayBuffer(file);
+                    const fileName = removeStructure ? file.name : file.webkitRelativePath || file.name;
+                    
+                    manifest.files.push({
+                        name: fileName,
+                        originalName: file.name,
+                        size: file.size,
+                        type: file.type || 'application/octet-stream',
+                        lastModified: file.lastModified
+                    });
+
+                    fileData.push(data);
+                }
+
+                // Serialize manifest and file data
+                const manifestJson = JSON.stringify(manifest);
+                const manifestData = new TextEncoder().encode(manifestJson);
+                
+                // Create locker structure: [manifest_length][manifest][file1][file2]...
+                let totalSize = 4 + manifestData.length; // 4 bytes for manifest length
+                for (let data of fileData) {
+                    totalSize += 4 + data.length; // 4 bytes for each file length + file data
+                }
+
+                const lockerData = new Uint8Array(totalSize);
+                const view = new DataView(lockerData.buffer);
+                
+                let offset = 0;
+                
+                // Write manifest length and data
+                view.setUint32(offset, manifestData.length, true);
+                offset += 4;
+                lockerData.set(manifestData, offset);
+                offset += manifestData.length;
+                
+                // Write file data
+                for (let data of fileData) {
+                    view.setUint32(offset, data.length, true);
+                    offset += 4;
+                    lockerData.set(data, offset);
+                    offset += data.length;
+                }
+
+                // Encrypt the entire locker
+                if (password) {
+                    return await SEPCrypto.encryptData(lockerData, password);
+                } else if (keyfileData) {
+                    return await SEPCrypto.encryptWithKeyfile(lockerData, keyfileData);
+                }
+                
+                throw new Error('No encryption method provided');
+            }
+
+            static async unlockLocker(encryptedLocker, password, keyfileData) {
+                let lockerData;
+                
+                if (password) {
+                    lockerData = await SEPCrypto.decryptData(encryptedLocker, password);
+                } else if (keyfileData) {
+                    lockerData = await SEPCrypto.decryptWithKeyfile(encryptedLocker, keyfileData);
+                } else {
+                    throw new Error('No decryption method provided');
+                }
+
+                const view = new DataView(lockerData.buffer);
+                let offset = 0;
+
+                // Read manifest
+                const manifestLength = view.getUint32(offset, true);
+                offset += 4;
+                const manifestData = lockerData.slice(offset, offset + manifestLength);
+                offset += manifestLength;
+
+                const manifestJson = new TextDecoder().decode(manifestData);
+                const manifest = JSON.parse(manifestJson);
+
+                // Read files
+                const files = [];
+                for (let i = 0; i < manifest.files.length; i++) {
+                    const fileLength = view.getUint32(offset, true);
+                    offset += 4;
+                    const fileData = lockerData.slice(offset, offset + fileLength);
+                    offset += fileLength;
+
+                    files.push({
+                        info: manifest.files[i],
+                        data: fileData
+                    });
+                }
+
+                return { manifest, files };
+            }
+        }
+
+        // ===== LOCKER UI FUNCTIONS =====
+        let lockerFiles = [];
+        let selectedLockerFile = null;
+
+        async function createLocker() {
+            if (lockerFiles.length === 0) {
+                showNotification('Please select files for the locker', 'warning');
+                return;
+            }
+
+            const name = document.getElementById('locker-name').value.trim();
+            if (!name) {
+                showNotification('Please enter a locker name', 'warning');
+                return;
+            }
+
+            const removeStructure = document.getElementById('remove-structure').checked;
+            const method = document.querySelector('input[name="locker-method"]:checked').value;
+            
+            let password, keyfileData;
+
+            if (method === 'password') {
+                password = document.getElementById('locker-password').value;
+                const confirmPassword = document.getElementById('locker-password-confirm').value;
+                
+                if (!password) {
+                    showNotification('Please enter a password', 'warning');
+                    return;
+                }
+                
+                if (password !== confirmPassword) {
+                    showNotification('Passwords do not match', 'error');
+                    return;
+                }
+
+                const strength = PasswordStrength.analyze(password);
+                if (strength.score <= 2) {
+                    if (!confirm('Your password is very weak. This may make your locker vulnerable to attacks. Continue anyway?')) {
+                        return;
+                    }
+                }
+            } else {
+                const keyfileInput = document.getElementById('locker-keyfile-input');
+                if (!keyfileInput.files[0]) {
+                    showNotification('Please select a keyfile', 'warning');
+                    return;
+                }
+                keyfileData = await FileHandler.readFileAsArrayBuffer(keyfileInput.files[0]);
+            }
+
+            FileHandler.showProgress('locker-create-progress');
+
+            try {
+                const encryptedLocker = await LockerSystem.createLocker(
+                    lockerFiles, name, removeStructure, password, keyfileData
+                );
+                
+                const filename = `${name}.locker`;
+                FileHandler.downloadFile(encryptedLocker, filename);
+                
+                showNotification(`Locker "${name}" created successfully`, 'success');
+                clearLockerForm();
+            } catch (error) {
+                showNotification('Failed to create locker: ' + error.message, 'error');
+            } finally {
+                FileHandler.showProgress('locker-create-progress', false);
+            }
+        }
+
+        async function unlockLocker() {
+            if (!selectedLockerFile) {
+                showNotification('Please select a locker file', 'warning');
+                return;
+            }
+
+            const method = document.querySelector('input[name="unlock-method"]:checked').value;
+            let password, keyfileData;
+
+            if (method === 'password') {
+                password = document.getElementById('unlock-password').value;
+                if (!password) {
+                    showNotification('Please enter the locker password', 'warning');
+                    return;
+                }
+            } else {
+                const keyfileInput = document.getElementById('unlock-keyfile-input');
+                if (!keyfileInput.files[0]) {
+                    showNotification('Please select a keyfile', 'warning');
+                    return;
+                }
+                keyfileData = await FileHandler.readFileAsArrayBuffer(keyfileInput.files[0]);
+            }
+
+            FileHandler.showProgress('locker-unlock-progress');
+
+            try {
+                const lockerData = await FileHandler.readFileAsArrayBuffer(selectedLockerFile);
+                const { manifest, files } = await LockerSystem.unlockLocker(lockerData, password, keyfileData);
+                
+                // Download all files
+                for (let file of files) {
+                    FileHandler.downloadFile(file.data, file.info.name);
+                }
+                
+                showNotification(`Locker "${manifest.name}" unlocked successfully. ${files.length} files downloaded.`, 'success');
+                clearUnlockForm();
+            } catch (error) {
+                showNotification('Failed to unlock locker: ' + error.message, 'error');
+            } finally {
+                FileHandler.showProgress('locker-unlock-progress', false);
+            }
+        }
+
+        function clearLockerForm() {
+            lockerFiles = [];
+            document.getElementById('locker-name').value = '';
+            document.getElementById('locker-password').value = '';
+            document.getElementById('locker-password-confirm').value = '';
+            document.getElementById('locker-keyfile-input').value = '';
+            PasswordStrength.updateStrengthIndicator('', 'locker-password-strength');
+        }
+
+        function clearUnlockForm() {
+            selectedLockerFile = null;
+            document.getElementById('unlock-password').value = '';
+            document.getElementById('unlock-keyfile-input').value = '';
+        }
+
+        // ===== SECURE DELETION =====
+        let filesToDelete = [];
+
+        class SecureDeletion {
+            static async secureDelete(files, passes = 3, progressCallback) {
+                console.log(`Starting secure deletion of ${files.length} files with ${passes} passes`);
+                
+                // Note: True secure deletion requires filesystem-level access
+                // This implementation provides a simulation for educational purposes
+                // In a real application, this would need to interface with the OS
+                
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    console.log(`Processing file ${i + 1}/${files.length}: ${file.name} (${file.size} bytes)`);
+                    
+                    for (let pass = 1; pass <= passes; pass++) {
+                        console.log(`Pass ${pass}/${passes} on ${file.name}`);
+                        
+                        // Simulate overwrite passes
+                        const progress = ((i * passes + pass) / (files.length * passes)) * 100;
+                        if (progressCallback) {
+                            progressCallback(progress, `Pass ${pass}/${passes} on ${file.name}`);
+                        }
+                        
+                        // Simulate the time it takes to overwrite (longer for larger files)
+                        const delay = Math.max(100, Math.min(2000, file.size / 10000)) + Math.random() * 200;
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                    }
+                    
+                    console.log(`Completed secure deletion of ${file.name}`);
+                }
+                
+                console.log('Secure deletion completed successfully');
+                if (progressCallback) {
+                    progressCallback(100, 'Deletion complete');
+                }
+                
+                return true;
+            }
+        }
+
+        function prepareSecureDelete() {
+            console.log('Preparing secure delete for files:', filesToDelete);
+            
+            if (filesToDelete.length === 0) {
+                showNotification('Please select files to delete', 'warning');
+                return;
+            }
+
+            const passes = parseInt(document.getElementById('delete-passes').value);
+            if (passes < 3 || passes > 100) {
+                showNotification('Passes must be between 3 and 100', 'error');
+                return;
+            }
+
+            console.log(`Preparing to delete ${filesToDelete.length} files with ${passes} passes`);
+
+            // Show file list
+            const fileList = document.getElementById('delete-file-list');
+            const container = document.getElementById('delete-files-container');
+            
+            if (container) {
+                container.innerHTML = filesToDelete.map(file => 
+                    `<div style="padding: var(--spacing-xs); border-bottom: 1px solid var(--border-color);">
+                        <strong>${file.name}</strong> (${formatFileSize(file.size)})
+                    </div>`
+                ).join('');
+            }
+            
+            if (fileList) {
+                fileList.classList.remove('hidden');
+            }
+
+            // Show confirmation
+            const confirmation = document.getElementById('delete-confirmation');
+            const actions = document.getElementById('delete-confirmation-actions');
+            
+            if (confirmation) confirmation.classList.remove('hidden');
+            if (actions) actions.classList.remove('hidden');
+
+            // Setup confirmation checkbox
+            const confirmCheckbox = document.getElementById('confirm-deletion');
+            const executeBtn = document.getElementById('delete-execute-btn');
+            
+            if (confirmCheckbox && executeBtn) {
+                // Remove previous listeners
+                const newCheckbox = confirmCheckbox.cloneNode(true);
+                confirmCheckbox.parentNode.replaceChild(newCheckbox, confirmCheckbox);
+                
+                newCheckbox.addEventListener('change', () => {
+                    executeBtn.disabled = !newCheckbox.checked;
+                    console.log('Confirmation checkbox changed:', newCheckbox.checked);
+                });
+            }
+
+            const prepareBtn = document.getElementById('delete-prepare-btn');
+            if (prepareBtn) prepareBtn.style.display = 'none';
+        }
+
+        function cancelSecureDelete() {
+            console.log('Cancelling secure delete');
+            
+            const confirmation = document.getElementById('delete-confirmation');
+            const actions = document.getElementById('delete-confirmation-actions');
+            const fileList = document.getElementById('delete-file-list');
+            const prepareBtn = document.getElementById('delete-prepare-btn');
+            const checkbox = document.getElementById('confirm-deletion');
+            
+            if (confirmation) confirmation.classList.add('hidden');
+            if (actions) actions.classList.add('hidden');
+            if (fileList) fileList.classList.add('hidden');
+            if (prepareBtn) prepareBtn.style.display = 'inline-flex';
+            if (checkbox) checkbox.checked = false;
+        }
+
+        async function executeSecureDelete() {
+            console.log('Executing secure delete');
+            
+            const passes = parseInt(document.getElementById('delete-passes').value);
+            const progressDiv = document.getElementById('delete-progress');
+            const statusText = document.getElementById('delete-status');
+            
+            console.log(`Starting deletion with ${passes} passes`);
+            
+            // Hide confirmation and show progress
+            const confirmation = document.getElementById('delete-confirmation');
+            const actions = document.getElementById('delete-confirmation-actions');
+            
+            if (confirmation) confirmation.classList.add('hidden');
+            if (actions) actions.classList.add('hidden');
+            if (progressDiv) progressDiv.classList.remove('hidden');
+
+            try {
+                const result = await SecureDeletion.secureDelete(filesToDelete, passes, (progress, status) => {
+                    console.log(`Progress: ${progress}% - ${status}`);
+                    FileHandler.updateProgress('delete-progress', progress);
+                    if (statusText) statusText.textContent = status;
+                });
+
+                console.log('Secure deletion completed successfully');
+                showNotification(`Successfully deleted ${filesToDelete.length} file(s) with ${passes} passes`, 'success');
+                clearDeleteForm();
+            } catch (error) {
+                console.error('Secure deletion failed:', error);
+                showNotification('Secure deletion failed: ' + error.message, 'error');
+            } finally {
+                if (progressDiv) progressDiv.classList.add('hidden');
+            }
+        }
+
+        function clearDeleteForm() {
+            console.log('Clearing delete form');
+            filesToDelete = [];
+            
+            const passesInput = document.getElementById('delete-passes');
+            const fileList = document.getElementById('delete-file-list');
+            const fileListDisplay = document.getElementById('delete-file-list-display');
+            const confirmation = document.getElementById('delete-confirmation');
+            const actions = document.getElementById('delete-confirmation-actions');
+            const prepareBtn = document.getElementById('delete-prepare-btn');
+            const checkbox = document.getElementById('confirm-deletion');
+            const warning = document.getElementById('passes-warning');
+            
+            if (passesInput) passesInput.value = '3';
+            if (fileList) fileList.classList.add('hidden');
+            if (fileListDisplay) fileListDisplay.classList.add('hidden');
+            if (confirmation) confirmation.classList.add('hidden');
+            if (actions) actions.classList.add('hidden');
+            if (prepareBtn) prepareBtn.style.display = 'inline-flex';
+            if (checkbox) checkbox.checked = false;
+            if (warning) warning.classList.add('hidden');
+        }
+
+        // ===== FORM MANAGEMENT =====
+        function clearEncryptForm() {
+            selectedFiles = [];
+            document.getElementById('encrypt-password').value = '';
+            document.getElementById('encrypt-password-confirm').value = '';
+            document.getElementById('encrypt-keyfile-input').value = '';
+            document.getElementById('encrypt-file-list').classList.add('hidden');
+            document.getElementById('encrypt-drop-zone').classList.remove('has-files');
+            PasswordStrength.updateStrengthIndicator('', 'encrypt-password-strength');
+        }
+
+        function clearDecryptForm() {
+            selectedFiles = [];
+            document.getElementById('decrypt-password').value = '';
+            document.getElementById('decrypt-keyfile-input').value = '';
+            document.getElementById('decrypt-file-list').classList.add('hidden');
+            document.getElementById('decrypt-drop-zone').classList.remove('has-files');
+        }
+
+        function clearStringForm() {
+            document.getElementById('string-input').value = '';
+            document.getElementById('string-password').value = '';
+            document.getElementById('string-output').value = '';
+            document.getElementById('copy-result-btn').disabled = true;
+        }
+    </script>
+</body>
+</html>

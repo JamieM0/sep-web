@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SEP for Web, Documentation</title>
+    <meta name="description" content="Usage guide, security notes, shortcuts, and file formats for SEP for Web." />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --primary-bg: #ffffff;
+            --secondary-bg: #f8f9fa;
+            --accent-bg: #f0f2f5;
+            --border-color: #e1e5e9;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6b7280;
+            --text-muted: #9ca3af;
+            --accent-color: #2ca4b6;
+            --accent-hover: #238a97;
+
+            --font-heading: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+            --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: var(--font-body); color: var(--text-primary); background: var(--primary-bg); }
+        a { color: var(--accent-color); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        header { position: sticky; top: 0; z-index: 10; background: rgba(255,255,255,0.9); backdrop-filter: saturate(180%) blur(12px); border-bottom: 1px solid var(--border-color); }
+        .container { max-width: 1050px; margin: 0 auto; padding: 0 20px; }
+        .nav { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; }
+        .brand { display: flex; align-items: center; gap: 10px; }
+        .brand h1 { margin: 0; font-family: var(--font-heading); font-size: 1.2rem; }
+        .wordmark { height: 48px; display: block; }
+        .nav-links { display: flex; gap: 10px; }
+        .btn { display: inline-flex; align-items: center; justify-content: center; height: 36px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--secondary-bg); color: var(--text-primary); font-weight: 600; font-family: var(--font-heading); }
+        .btn-primary { background: var(--accent-color); color: #fff; border-color: transparent; }
+        main { padding: 28px 0 60px; }
+        h2 { font-family: var(--font-heading); font-size: 1.6rem; margin: 24px 0 10px; }
+        h3 { font-family: var(--font-heading); font-size: 1.2rem; margin: 18px 0 8px; }
+        p { color: var(--text-secondary); }
+        .card { background: var(--primary-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: 0 6px 20px rgba(0,0,0,0.06); }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+        .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; }
+        .alert { background: rgb(245 158 11 / 0.08); border: 1px solid rgb(245 158 11 / 0.3); color: #92400e; padding: 14px 16px; border-radius: 10px; box-shadow: 0 6px 16px rgba(245, 158, 11, 0.08); }
+        ul { color: var(--text-secondary); }
+        code { background: var(--accent-bg); padding: 2px 6px; border-radius: 6px; }
+        @media (max-width: 840px) { .grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container nav">
+            <div class="brand">
+                <a href="/">
+                    <img src="assets/images/wordmark-inline.png" alt="SEP for Web" class="wordmark" style="height:48px;display:block;" />
+                </a>
+            </div>
+            <nav class="nav-links" aria-label="Main navigation">
+                <a class="btn" href="docs.html">Docs</a>
+                <a class="btn" href="sep.html">Open App</a>
+                <a class="btn btn-primary" href="#" onclick="downloadSep(); return false;" aria-label="Download sep.html">Download Single‑File</a>
+            </nav>
+        </div>
+    </header>
+    <main class="container">
+        <section class="card">
+            <h2>Overview</h2>
+            <p>SEP for Web is a single‑file, client‑side encryption tool. Open <code>sep.html</code> in a modern browser to encrypt or decrypt files, generate and use keyfiles, create lockers (encrypted containers), run text encryption, and simulate secure file deletion. Nothing is uploaded, everything stays on your device.</p>
+        </section>
+
+        <section class="grid">
+            <div class="card">
+                <h3>Features</h3>
+                <ul>
+                    <li>Encrypt/Decrypt files with a password or a keyfile</li>
+                    <li>Create and unlock encrypted lockers</li>
+                    <li>Text encryption utility</li>
+                    <li>Simulated multi‑pass secure delete (3–100 passes)</li>
+                    <li>Offline‑first: single HTML file, no network required</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Security model</h3>
+                <ul>
+                    <li>AES‑GCM with 256‑bit keys</li>
+                    <li>PBKDF2‑SHA‑256 key derivation (passwords: 100,000 iterations)</li>
+                    <li>Keyfiles derive keys with reduced iterations (already high entropy)</li>
+                    <li>Per‑file random salt and IV</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="grid">
+            <div class="card">
+                <h3>Using the app</h3>
+                <ol>
+                    <li>Open <a href="sep.html">sep.html</a> in your browser.</li>
+                    <li>Choose a tab, Encrypt, Decrypt, Keyfile Tools, String Crypto, Lockers, or Secure Delete.</li>
+                    <li>Follow the inputs on screen. Progress and notifications appear in the UI.</li>
+                </ol>
+            </div>
+            <div class="card">
+                <h3>Shortcuts</h3>
+                <ul>
+                    <li><span class="mono">Ctrl + 1…6</span>: Switch tabs</li>
+                    <li><span class="mono">Ctrl + Enter</span>: Run primary action in current tab</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="grid">
+            <div class="card">
+                <h3>File formats</h3>
+                <ul>
+                    <li><span class="mono">.sep</span> — encrypted single files</li>
+                    <li><span class="mono">.locker</span> — encrypted multi‑file container with embedded manifest</li>
+                    <li><span class="mono">.key</span> — binary keyfile generated by the app</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Password strength</h3>
+                <p>The app provides a basic strength meter. Weak passwords are allowed but discouraged, you may be prompted to confirm before continuing.</p>
+            </div>
+        </section>
+
+        <section class="card alert" role="alert">
+            <h3>Important warnings</h3>
+            <ul>
+                <li>All processing is local. There is no account or recovery mechanism. Losing a password or keyfile means permanent loss of access.</li>
+                <li>There is no rate limiting, a copied encrypted file can be attacked offline. Choose strong passwords or keyfiles.</li>
+                <li>Secure delete is a simulation in browsers, true secure wiping requires filesystem‑level control.</li>
+                <li>University research project disclaimer, no guarantees are provided about the implementation. Keep independent backups.</li>
+            </ul>
+        </section>
+
+        <section class="grid">
+            <div class="card">
+                <h3>Tips</h3>
+                <ul>
+                    <li>Prefer keyfiles for high‑entropy secrets.</li>
+                    <li>Store keyfiles separately from encrypted data.</li>
+                    <li>Consider printing or recording recovery hints in a safe place (not the password itself).</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Future Ambitions</h3>
+                <ul>
+                    <li>Built‑in Password Library</li>
+                    <li>Password manager integrations (e.g., Bitwarden)</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="container" style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; padding: 20px 0; border-top: 1px solid var(--border-color); background: var(--secondary-bg); color: var(--text-muted);">
+            <div>SEP for Web • 100% Client‑Side • No Data Transmitted</div>
+            <div><a href="index.html">Home</a> • <a href="sep.html">Launch App</a></div>
+        </div>
+    </footer>
+    <script>
+        async function downloadSep() {
+            try {
+                const response = await fetch('sep.html', { cache: 'no-store' });
+                if (!response.ok) throw new Error('Network error');
+                const data = await response.arrayBuffer();
+                const blob = new Blob([data], { type: 'application/octet-stream' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'sep.html';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                setTimeout(() => URL.revokeObjectURL(url), 1000);
+            } catch (e) {
+                const a = document.createElement('a');
+                a.href = 'sep.html';
+                a.setAttribute('download', 'sep.html');
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }
+        }
+    </script>
+</body>
+</html>
+
+
