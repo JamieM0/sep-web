@@ -76,7 +76,7 @@
             align-items: center;
             gap: 10px;
         }
-        .wordmark { height: 28px; display: block; }
+        .wordmark { height: clamp(28px, 8vw, 48px); display: block; }
         .nav-links {
             display: flex;
             gap: 10px;
@@ -236,14 +236,22 @@
         }
 
         @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } .hero h2 { font-size: 2rem; } .tagline { font-size: 1.1rem; } }
+        @media (max-width: 640px) {
+            .grid { grid-template-columns: 1fr; }
+            .hero h2 { font-size: 2rem; }
+            .tagline { font-size: 1.1rem; }
+            .nav { padding: 10px 0; flex-wrap: wrap; row-gap: 8px; }
+            .brand { width: 100%; justify-content: center; }
+            .nav-links { width: 100%; justify-content: center; flex-wrap: wrap; gap: 8px; }
+            .btn { height: 36px; padding: 0 10px; }
+        }
     </style>
 </head>
 <body>
     <header>
         <div class="container nav">
             <div class="brand">
-                <img src="assets/images/wordmark-inline.png" alt="SEP for Web" class="wordmark" style="height:48px;display:block;" />
+                <img src="assets/images/wordmark-inline.png" alt="SEP for Web" class="wordmark" />
             </div>
             <nav class="nav-links" aria-label="Main navigation">
                 <a class="btn" href="docs.html">Docs</a>
